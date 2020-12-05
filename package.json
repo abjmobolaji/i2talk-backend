@@ -1,0 +1,30 @@
+{
+  "name": "i2talk-backend",
+  "version": "1.0.1",
+  "description": "i2talk backend development",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leboshjr/i2talk-backend.git"
+  },
+  "keywords": [
+    "Chat",
+    "app",
+    "chat",
+    "chat",
+    "rooms",
+    "chat",
+    "message",
+    "messaging",
+    "etc"
+  ],
+  "author": "Team Infinity - Tiidelab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leboshjr/i2talk-backend/issues"
+  },
+  "homepage": "https://github.com/leboshjr/i2talk-backend#readme"
+}
