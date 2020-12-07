@@ -1,6 +1,6 @@
 // required files
 const express = require('express');
-
+const bodyParser = require('body-parser')
 
 // routes
 const contactRoutes = require('./routes/contact-route');
@@ -12,6 +12,7 @@ const iSearchRoutes = require('./routes/iSearch-route');
 const port = 3000;
 const app = express();
 
+app.use(bodyParser.json());
 app.use('/api/users', usersRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/faq', faqRoutes);
