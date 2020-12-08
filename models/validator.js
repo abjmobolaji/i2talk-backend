@@ -7,6 +7,13 @@ const reminderValidationRules = () => {
   ]
 }
 
+const faqValidationRules = () => {
+  return [
+    body('question').isLength({ min: 10 }).withMessage('Question must have more than 10 characters'),
+    body('answer').isLength({ min: 20 }).withMessage('Answer must have more than 20 characters')
+  ]
+}
+
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
@@ -22,5 +29,6 @@ const validate = (req, res, next) => {
 
 module.exports = {
   reminderValidationRules,
-  validate,
+  faqValidationRules,
+  validate
 }
