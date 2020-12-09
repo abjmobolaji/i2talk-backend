@@ -14,6 +14,17 @@ const faqValidationRules = () => {
   ]
 }
 
+const contactValidationRules = () => {
+  return [
+    body('customerName').isLength({ min: 5 }).withMessage('Name must have more than 5 characters'),
+    body('customerEmail').isEmail().normalizeEmail().withMessage('Invalid email address'),
+    body('customerSubject').not().isEmpty().withMessage('Subject cannot be empty')
+                           .isLength({ min: 5 }).withMessage('Subject must have more than 5 characters'),
+    body('customerMessage').not().isEmpty().withMessage('Message cannot be empty')
+                           .isLength({ min: 15 }).withMessage(' must have more than 15 characters')
+  ]
+}
+
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
@@ -30,5 +41,6 @@ const validate = (req, res, next) => {
 module.exports = {
   reminderValidationRules,
   faqValidationRules,
+  contactValidationRules,
   validate
 }
