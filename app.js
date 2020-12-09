@@ -1,15 +1,16 @@
-// required files
+// Required files
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser')
 
-// routes
+// Routes
 const contactRoutes = require('./routes/contact-route');
 const usersRoutes = require('./routes/users-route');
 const faqRoutes = require('./routes/faq-route');
 const iReminderRoutes = require('./routes/iReminder-route');
 const iSearchRoutes = require('./routes/iSearch-route');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.json());
