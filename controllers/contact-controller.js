@@ -3,7 +3,7 @@ const sendMail = require('../util/mail');
 
 const contact = (req, res, next) => {
     const { customerName, customerEmail, customerSubject, customerMessage} = req.body;
-    const attendedToBy = "rashotech@gmail.com"
+    const attendedToBy = "rasheed.adedamola@gmail.com"
     sendMail(customerName, customerEmail, customerSubject, customerMessage, attendedToBy, function(err, info) {
         if (err) {
             res.status(500).json({ message: 'Internal Error' });
