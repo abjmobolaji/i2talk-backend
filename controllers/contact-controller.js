@@ -8,11 +8,12 @@ const contact = (req, res, next) => {
         if (err) {
             res.status(500).json({ message: 'Internal Error' });
         } else {
-            const sql = `insert into contact_us (customerName, customerEmail, customerSubject, customerMessage, attendedToBy) values ('${customerName}', '${customerEmail}', '${customerSubject}', '${customerMessage}', '${attendedToBy}')`;
+            const sql = `INSERT INTO contact_us (customerName, customerEmail, customerSubject, customerMessage, attendedToBy) 
+                        VALUES ('${customerName}', '${customerEmail}', '${customerSubject}', '${customerMessage}', '${attendedToBy}')`;
             connection.query(sql, (err, response) => {
                 if (err) return res.status(422).json({message : err.sqlMessage}) 
         }); 
-                res.status(201).json({ message: 'Email sent!!!' });
+                res.status(201).json({ message: 'Contact Message Sent!!!' });
         }});
 };
 
