@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", auth.authenticateUser, auth.authorizeUser("view_users"), userController.getUsers);
 
 // GET USERS BY ID
-router.get("/:id", userController.getUserByID);
+router.get("/:id", auth.authenticateUser, userController.getUserByID);
 
 // LOGIN
 router.post("/login", userController.login)
@@ -30,10 +30,10 @@ router.post("/resetPassword", userController.resetPassword);
 router.post("/setNewPassword", userController.setPassword);
 
 // EDIT USER PROFILE
-router.put("/editProfile/:id", userController.editUserDetails);
+router.put("/editProfile/:id",  auth.authenticateUser, userController.editUserDetails);
 
 // CHANGE USER PASSWORD
-router.post("/changePassword", userController.changePassword);
+router.post("/changePassword", auth.authenticateUser, userController.changePassword);
 
 
 module.exports = router;
