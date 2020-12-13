@@ -2,7 +2,9 @@ const connection = require('../models/db');
 
 // Create  FAQ
 const addFaq = (req, res, next) => {
-    const { question, answer, updatedBy } = req.body;
+    if (req.data.canUser === "false") { return res.status(403).json({message : "Access Forbidden!!"}); }
+    const updatedBy = req.data.username;
+    const { question, answer} = req.body;
     const sql = `insert into faq (question, answer, updatedBy) values ('${question}', '${answer}', '${updatedBy}')`;
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 
@@ -12,7 +14,9 @@ const addFaq = (req, res, next) => {
 
 // Edit FAQ
 const editFaq = (req, res, next) => {
-    const { question, answer, updatedBy } = req.body;
+    if (req.data.canUser === "false") { return res.status(403).json({message : "Access Forbidden!!"}); }
+    const updatedBy = req.data.username;
+    const { question, answer } = req.body;
     connection.query(`select * from faq where id = ${req.params.id}`, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 
         else if (response.length === 0) return res.status(404).json({message : 'Could not find a faq with the provided id'})
@@ -25,6 +29,7 @@ const editFaq = (req, res, next) => {
 
 // Delete FAQ
 const deleteFaq = (req, res, next) => {
+    if (req.data.canUser === "false") { return res.status(403).json({message : "Access Forbidden!!"}); }
     connection.query(`select * from faq where id = ${req.params.id}`, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 
         else if (response.length === 0) return res.status(404).json({message : 'No faq with the with the provided id'})

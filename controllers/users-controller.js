@@ -20,7 +20,7 @@ const getUsers = (req, res, next) => {
         } else {
             return res.status(404).json({message : "No User Found!!!!"})
         }
-
+        
     });
 }
 

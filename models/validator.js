@@ -14,6 +14,33 @@ const faqValidationRules = () => {
   ]
 }
 
+// iSearch Validation
+const iSearchValidation1Rules = () => {
+  return [ 
+    body('username_phone').not().isEmpty().withMessage('Input cannot be empty')
+  ]
+}
+
+const iSearchValidation2Rules = () => {
+  return [ 
+    body('location').not().isEmpty().withMessage('cannot be empty')
+    .isLength({ min: 3 }).withMessage('Location name must have more than 3 characters'),
+    body('kilometer').not().isEmpty().withMessage('cannot be empty')
+                     .matches(/\d/).withMessage('must contain a number'),
+  ]
+}
+
+const iSearchValidation3Rules = () => {
+  return [ 
+    body('kilometer').not().isEmpty().withMessage('cannot be empty')
+                     .matches(/\d/).withMessage('must contain a number'),
+    body('latitude').not().isEmpty().withMessage('cannot be empty')
+                     .matches(/\d/).withMessage('must contain a number'),
+    body('longitude').not().isEmpty().withMessage('cannot be empty')
+                     .matches(/\d/).withMessage('must contain a number')
+  ]
+}
+
 const contactValidationRules = () => {
   return [
     body('customerName').isLength({ min: 5 }).withMessage('Name must have more than 5 characters'),
@@ -42,5 +69,8 @@ module.exports = {
   reminderValidationRules,
   faqValidationRules,
   contactValidationRules,
+  iSearchValidation1Rules,
+  iSearchValidation2Rules,
+  iSearchValidation3Rules,
   validate
 }
