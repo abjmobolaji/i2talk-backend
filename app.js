@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 // Routes
 const contactRoutes = require('./routes/contact-route');
 const usersRoutes = require('./routes/users-route');
+const userAuthRoutes =  require('./routes/user-auth-route');
 const faqRoutes = require('./routes/faq-route');
 const iReminderRoutes = require('./routes/iReminder-route');
 const iSearchRoutes = require('./routes/iSearch-route');
@@ -15,6 +16,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use('/api/users', usersRoutes);
+app.use('/api/', userAuthRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/faq', faqRoutes);
 app.use('/api/ireminder', iReminderRoutes);

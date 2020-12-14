@@ -47,9 +47,17 @@ var authorizeUser = (permissions) => {
     }
 } 
 
+var canUser = (req, res, next) => {
+    if (req.data.canUser === "false") { return res.status(403).json({message : "Access Forbidden!!"}); }
+    delete req.data.canUser;
+    req.data = req.data;
+    next();
+};
+
 
 
 
 
 module.exports.authenticateUser = authenticateUser;
 module.exports.authorizeUser = authorizeUser;
+module.exports.canUser = canUser;
