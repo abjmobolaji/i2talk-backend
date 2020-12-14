@@ -3,7 +3,7 @@ const connection  = require('../models/db');
 const jwt = require('jsonwebtoken');
 
 // AUTHENTICATE USERS
-var  authenticateUser = (req, res, next) => {
+var authenticateUser = (req, res, next) => {
     var authHeader = req.headers['authorization'];
     var token = authHeader && authHeader.split(" ")[1];
     if(!token) { return res.status(401).json({message : "Unauthorized!!! Try Login again!"})}

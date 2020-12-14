@@ -29,7 +29,11 @@
   },
   "homepage": "https://github.com/leboshjr/i2talk-backend#readme",
   "dependencies": {
+<<<<<<< HEAD
     "authy": "^1.4.0",
+=======
+    "axios": "^0.21.0",
+>>>>>>> 89e0dcc6d492b65be49071c8a1372e3a4d0b24e2
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
