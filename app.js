@@ -15,6 +15,7 @@ const partialsPath = path.join(__dirname, './templates/partials');
 // Routes
 const contactRoutes = require('./routes/contact-route');
 const usersRoutes = require('./routes/users-route');
+const userAuthRoutes =  require('./routes/user-auth-route');
 const faqRoutes = require('./routes/faq-route');
 const iReminderRoutes = require('./routes/iReminder-route');
 const iSearchRoutes = require('./routes/iSearch-route');
@@ -39,7 +40,7 @@ hbs.registerHelper('extend', function(name, context) {
         block = blocks[name] = [];
     }
 
-    block.push(context.fn(this)); // for older versions of handlebars, use block.push(context(this));
+    block.push(context.fn(this)); 
 });
 
 hbs.registerHelper('block', function(name) {
@@ -53,6 +54,7 @@ hbs.registerHelper('block', function(name) {
 
 app.use(bodyParser.json());
 app.use('/api/users', usersRoutes);
+app.use('/api', userAuthRoutes);
 app.use('/api/chatrooms', chatRoomsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/faq', faqRoutes);
@@ -132,9 +134,30 @@ app.use((error, req, res, next) => {
 
 // Socket io
 io.on('connection', socket => {
-    console.log('New WS Socket');
+    console.log('Connection established')
+    socket.on('joinRoom', ({ username, room }) => {
 
-    socket.emit('message', 'Welcome to i2talk')
+        
+        
+        const user = userJoin(socket.id, username, room);
+
+        socket.join(user.room)
+
+            // Welcome current User
+        socket.emit('message', formatMessage(botName, `Welcome to ChatCord ${user.room} Room`));
+
+        // Broadcast when a user connects
+        socket.broadcast
+        .to(user.room)
+        .emit('message', formatMessage(botName, `${user.username} has joined the chat room`))
+
+        // send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        })
+    })
+    // socket.emit('message', 'Welcome to i2talk')
 
     socket.broadcast.emit('message', 'A user has joined the chat')
 

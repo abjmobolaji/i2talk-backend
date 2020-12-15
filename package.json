@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/leboshjr/i2talk-backend#readme",
   "dependencies": {
+    "authy": "^1.4.0",
     "axios": "^0.21.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -43,7 +44,7 @@
     "nodemailer": "^6.4.16",
     "nodemailer-mailgun-transport": "^2.0.2",
     "nodemon": "^2.0.6",
-    "save": "^2.4.0",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "twilio": "^3.54.0"
   }
 }

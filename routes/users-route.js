@@ -9,25 +9,10 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 // GET ALL USERS
-router.get("/", auth.authenticateUser, auth.authorizeUser("view_users"), userController.getUsers);
+router.get("/", auth.authenticateUser, [auth.authorizeUser("view_users"), auth.canUser], userController.getUsers); 
 
 // GET USERS BY ID
-router.get("/:id", auth.authenticateUser, userController.getUserByID);
-
-// LOGIN
-router.post("/login", userController.login)
-
-// SIGN UP
-router.post("/signup", stateLocation.getlatlongFromState, userController.signup);
-
-// ACTIVATE ACCOUNT
-router.get("/auth/activation/:userID/:otpCode", userController.activateAccount);
-router.post("/requestActivationLink", userController.requestActivationLink);
-
-// RESET PASSWORD
-router.get("/auth/reset/:userID/:otpCode", userController.getResetPassword);
-router.post("/resetPassword", userController.resetPassword);
-router.post("/setNewPassword", userController.setPassword);
+router.get("/:id", auth.authenticateUser, userController.getUserByID); 
 
 // EDIT USER PROFILE
 router.put("/editProfile/:id",  auth.authenticateUser, userController.editUserDetails);
