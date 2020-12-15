@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="Description" content="i2talk">
+	<meta name="Keywords" content="Chat App, Chat rooms, Message Scheduling, Location-based User search, chats, iDiary, iSchedule, iReminder, iSearch">
+		
+		
+	<link rel="stylesheet" href="/css/dashboard/all.css">
+	<link rel="stylesheet" href="/css/dashboard/styles.css">
+    {{{block "stylesheets"}}}
+	
+	<title>i2talk | {{title}} </title>
+</head>
+
+<body>
+<div class="chat-container">
+  <!-- Side Bar Menu-->
+  <div class="side-bar scrollbar" id="user-side-bar">
+	<div class="chat-header">
+		<a class="profile-back-arrow" onclick="showSideBar('user-chat-menu', 'user-side-bar')"><i class="fas fa-long-arrow-alt-left"></i></a>
+		<h3>Profile</h3>
+	</div>
+  	<div id="profile" class="side-bar-profile"></div>
+  	<div id="profile-box"></div>
+  	<div id="side-menu-container" class="side-menu">
+        <ul class="side-menu">
+        <li><a href="/chatroom"><i class="fas fa-comments fa-1x"></i> Chat Rooms</a></li>
+        <li><a href="/idiary"><i class="fas fa-book fa-1x"></i> iDiary</a></li>
+        <li><a href="/ireminder"><i class="fas fa-business-time fa-1x"></i> iReminder</a></li>
+        <li><a href="/isearch"><i class="fas fa-search fa-1x"></i> iSearch</a></li>
+        <li><a href="/settings"><i class="fas fa-cog fa-1x"></i> Settings</a></li> 
+        <li><a href="/admin" id="side-menu-extra"><i class="fas fa-user-cog fa-1x"></i><b> Admin Panel</b></a></li>
+        <li><a href="/logout"><i class="fas fa-reply-all fa-1x"></i> Log Out</a></li>   			
+        </ul>
+    </div>
+  </div>
+  
+  <!-- Chat Menu-->
+  <div class="chat-menu scrollbar" id="user-chat-menu">
+	<div class="chat-menu-profile">
+		<div id="menu-profile" onclick="showSideBar('user-side-bar', 'user-chat-menu')" class="chat-menu-open side-bar-profile"></div>
+		<div class="tooltip">
+			<a href="/isearch"><i class="fas fa-search fa-1x"></i></a>
+			<p class="tooltiptext">iSearch</p>
+		</div>
+		<div class="tooltip">
+			<a href=""><i class="far fa-comment-dots"></i></a>
+			<p class="tooltiptext">New Chat</p>
+		</div>
+		<div class="tooltip">
+			<a onclick=""><i class="fas fa-ellipsis-v"></i></a>
+			<p class="tooltiptext">Menu</p>
+		</div>
+	</div>
+  	<div class="chat-header">
+		<span>Chats</span>
+		<span class="chat-counter"></span>
+	  </div>
+	  <div id="chat-menu">
+</div>
+</div>
+  {{{body}}}
+</div>
+
+{{!-- <script src="./assets/js/common/users.js"></script>
+<script src="./assets/js/chats/chat-msg.js"></script> --}}
+<script src="/js/dashboard/home.js"></script>
+ {{{block "scripts"}}}
+</body>
+</html>

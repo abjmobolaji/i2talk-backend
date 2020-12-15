@@ -1,0 +1,370 @@
+/*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
+                    DESKTOP VIEW
+*   *   *   *   *   *   *   *   *   *   *   *   *   *   *   */
+/* -------------------------------------------------
+                    ABOUT PAGE
+    ---------------------------------------------------*/
+
+.about-heading h3{
+    text-align: center;
+    font-size: 1.6rem;
+    margin-top: 5rem;
+}
+
+h3 span{
+    color:var(--secondary-color);
+}
+
+.text h4 {
+    font-size: 1.4rem;
+    display: block;
+    padding: 30px;
+}
+
+.about-items{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 90%;
+    text-align: center;
+}
+
+.items {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+    margin: 3rem auto;
+}
+
+.item-1, .item-3, .item-5{
+    flex-direction: row;
+}
+
+.item-2, .item-4{
+    flex-direction: row-reverse;
+}
+
+.about-img {
+    width: 50%;
+}
+
+.about-img img {
+    width: 100%;
+}
+
+.text {
+    width: 40%;
+}
+
+/**-------------------------------------------------
+            CHAT DASHBOARD
+-------------------------------------------------**/
+/* The side navigation menu */
+.chat-container {
+	display: grid;
+	grid-template-columns: 220px 410px auto;
+	grid-gap: 1px;
+	background-color: var(--primary-color);
+	padding: 0;
+	min-height: 100vh;
+}
+
+/** The Side Navigation menu ***/
+.side-bar {
+	background-color: var(--primary-color);
+	color: white;
+}
+
+.profile {
+	text-align: center;
+	padding: 10px 10px 5px 10px;
+	font-size: 12px;
+}
+
+.profile img {
+	border-radius: 50%;
+	height: 120px;
+	width: 120px;
+
+}
+
+.profile-box {
+	background-color: white;
+	color: var(--primary-color);
+	text-align: center;
+	padding: 8px;
+	margin: 5px 0px 0px;
+}
+
+.side-menu {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+.side-menu > li {
+	border-bottom: 1px solid;
+	padding: 10px;
+}
+
+.side-menu > li:hover {
+	color: var(--primary-color);
+	background: var(--secondary-color);
+}
+
+/* The Chat menu */
+.chat-menu {
+	background-color: white;
+}
+.chat-header {
+	background: rgba(17,14,76,0.80);
+	color: white;
+	padding: 15px;
+}
+.chat-counter {
+	border-radius: 50%;
+	font-size: 10px;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 4px 6px 4px 4px;
+}
+.chat-box {
+	display: grid;
+	grid-template-columns: 80px auto 60px;
+	border-bottom: solid 1px;
+}
+.chat-box:hover {
+	background: var(--primary-color);
+	color: white;
+}
+.chat-box-img {
+	padding: 2px 0px;
+}
+.chat-box-img img {
+	border-radius: 50%;
+	width: 80px;
+	height: 80px;
+}
+.chat-box-msg {
+	padding: 5px 10px;
+}
+.chat-box-msg h4 {
+	margin-bottom: 10px;
+	font-size: 17px;
+}
+.chat-box-msg p {
+	font-size: 15px;
+}
+.chat-box-stats {
+	text-align: center;
+}
+.chat-box-stats p {
+	margin-bottom: 10px;
+}
+.chat-box-stats h7 {
+	font-size: 15px;
+}
+/* The Chat Message menu */
+.chat-message {
+	background-color: #dfdfdf;
+	padding: 100px;
+	text-align: center;
+}
+.chat-message img {
+	border-radius: 50%;
+	width: 290px;
+	height: 290px;
+}
+.chat-message h1 {
+	font-size: 40px;
+	font-weight: bold;
+	line-height: 1.2em;
+}
+
+
+/*--------------------------------------
+              FAQ PAGE  
+----------------------------------------*/
+.faq-heading  img{
+    display:block;
+    margin: auto;
+}
+
+.faq-heading h3{
+    text-align:center;
+}
+
+.faq-questions{
+    padding-left:50px;
+	width:70%;
+}
+
+.faq-questions h4:hover{
+	background-color:#FAEE1C;
+	padding:5px;
+	box-shadow: 4px 5px 6px 2px var(--primary-color);
+	border-bottom-right-radius: 20px;
+    cursor: pointer;
+}
+
+.faq-questions p{
+    display:none;
+	padding-top:20px;
+	padding-left: 80px;
+}
+
+/*--------------------------------------
+              PRIVACY AND SECURITY 
+----------------------------------------*/
+
+#sp-flex {
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	justify-content: space-evenly;
+	height: 100vh;
+	margin: auto;
+margin-top: 50px;	
+	
+}
+#sp-flex a{
+    text-decoration: none;
+    	
+    }
+    #sp-flex a:hover{
+        color: var(--primary-color);
+    }
+#sp1 {
+	background: var(--primary-color);
+	width: 20vw;
+	margin-bottom: 15px;
+}
+#sp1-content #profile {
+	background: var(--light-color);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#sp1-content #history {
+	background: var(--light-color);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#sp1-content #bookmarks {
+	background: var(--light-color);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#sp1-content #logout {
+	background: var(--light-color);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#sp1-image{
+	background: url(../users/Kristina.jpg) no-repeat center center/cover;
+	border-radius: 50%;
+	margin-bottom: 50px;
+	height: 200px;
+	width: 50%;
+	margin: 20px auto; 
+}
+
+#sp2 a, #sp3 a, #sp4 a {
+line-height: 3rem;
+}
+
+
+
+/*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
+                    TABLET VIEW
+*   *   *   *   *   *   *   *   *   *   *   *   *   *   *   */
+@media all and (max-width: 768px) {
+        
+    /* -------------------------------------------------
+                    ABOUT PAGE
+    =--------------------------------------------------*/
+	.about-heading{
+		margin-top: 5rem;
+		padding: 0 2rem;
+	}
+
+	.text{
+		width:60%;
+		padding-top: 20px;
+	}
+
+	.item-1, .item-3, .item-5{
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.item-2, .item-4{
+		flex-direction: column;
+		align-items: flex-end;
+    }
+    
+    /* ---------------------------------------------
+                    CHAT DASHBOARD
+    ------------------------------------------------*/
+    /* Tablet Menu*/
+    .chat-container {
+        display: grid;
+        grid-template-columns: 0px 368px auto;
+        grid-gap: 1px;
+        background-color: var(--primary-color);
+        padding: 0;
+        min-height: 100vh;
+    
+    }
+
+    /* ---------------------------------------------------
+                    FAQ PAGE
+    --------------------------------------------------*/
+    .faq-questions{
+        padding-left:0px;
+		width:90%;
+	}
+}
+
+
+
+/*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
+                    MOBILE VIEW
+*   *   *   *   *   *   *   *   *   *   *   *   *   *   *   */
+@media all and (max-width: 450px) {
+
+    /* -----------------------------------------
+                     CHAT DASHBOARD
+    ------------------------------------------- */
+    
+    /* Mobile Menu*/
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--primary-color);
+        padding: 0;
+    }
+    .side-bar {
+        flex: 100%;
+        background-color: white;
+        display: none;
+    }
+    .chat-menu {
+        flex: 100%;
+        background-color: white;
+    }
+    .chat-message {
+        flex: 100%;
+        display: none;
+    }
+
+    /* ---------------------------------------------------
+                    FAQ PAGE
+    --------------------------------------------------*/
+    .faq-questions{
+        padding-left:0px;
+		width:100%;
+	}
+        
+}
+    

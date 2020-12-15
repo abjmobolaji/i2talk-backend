@@ -1,0 +1,38 @@
+<div class="chat-message-container">
+		<div class="chat-message" id="user-direct-chat">
+			<!-- Enter your code here -->
+			<div class="chat-header">
+				<a class="message-back-arrow" href="/chatroom"><i class="fas fa-long-arrow-alt-left"></i></a>
+				<div class="chat-head-username">
+					<span id="chat-header"></span>
+				</div>
+				<div class="chat-head-menu">
+					<a onclick="reveal('chat-menu-list')"><i class="fas fa-ellipsis-v"></i></a>
+				</div>
+				<ul class="" id="chat-menu-list">
+					<li>View Members</li>
+					<li>Mute notifications</li>
+					<li>Search</li>
+					<li>Report</li>
+					<li><button id="leaveRoomidd">Leave room</button></li>
+				</ul>
+			</div>
+			<div class="chat-body scrollbar" id="style-2">
+				<div id="messages">
+				</div>
+			</div>
+			<div class="chat-form">
+				<form id="messageForm">
+					<textarea id="msg-input" autocapitalize= "sentences" autocomplete="on" placeholder="Type message here ..." rows="1"></textarea>
+					<button id="msg-btn"><i class="far fa-paper-plane"></i></button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+{{#extend "scripts"}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/dashboard/chat-room.js"></script>
+{{/extend}}

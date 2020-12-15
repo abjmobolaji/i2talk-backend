@@ -1,0 +1,244 @@
+
+	.iDiary-container{
+		background-color:var(--light-color);
+		/* width: 60%; */
+		height: 100vh;
+		overflow-y: scroll;
+	}
+
+	.title-bar{
+		background-color: var(--primary-color);
+		position: sticky;
+		top: 0;
+		color: #fff;
+		display:flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 20px 16px;
+		margin-bottom: 30px;
+	}
+
+	.title-bar > span >i{
+		margin-left: 10px;
+	}
+
+	.title-bar > span >i:hover{
+		font-size: 30px;
+	}
+
+	#addNew, #editNew{
+		display:none;
+		width:40%;
+		height:auto;
+		padding-left: 20px;
+		background-color: #fffffe;
+		position:absolute;
+		top: 50%;
+	  	left: 50%;
+	  	transform: translate(-50%,-50%);
+	  	-ms-transform: translate(-50%,-50%);
+		box-shadow: 4px 4px 4px 4px var(--primary-color)
+	}
+
+	#addNew > div, #editNew > div{
+		margin:0px auto 20px auto;
+	}
+
+	#cancel, #addNew-btn{
+		display:inline-block;
+		margin-right:20px;
+		background-color:var(--primary-color);
+		color:white;
+		padding:10px;
+		border:2px solid var(--primary-color);
+		border-radius: 10px;
+	}
+
+	#submitNewMessage-btn, #editedMessage-btn{
+		margin-left:30%;
+		padding:10px 20px 10px 20px;
+	}
+
+	#cancel{
+		margin-left: 20px;
+		margin-right:30%;
+	}
+
+	#search-btn, #submitNewMessage-btn, #editedMessage-btn{
+		background-color: var(--primary-color);
+		color:white;
+		padding:10px;
+		border:2px solid var(--primary-color);
+		border-radius:10px;
+	}
+
+	button{
+		outline-style: none;
+	}
+
+	#search-btn:hover, 
+	#submitNewMessage-btn:hover, 
+	#editedMessage-btn:hover,
+	#cancel:hover, 
+	#addNew-btn:hover, 
+	#back-btn:hover{
+		background-color: var(--secondary-color);
+		box-shadow: 2px 2px 2px 2px var(--primary-color);
+		color:var(--primary-color);
+	}
+
+	#messages{
+		width:100%;
+	}
+
+	#messageContainer{
+		width:80%;
+		border-radius: 20px;
+		border-top-right-radius: 0px;
+		border-top-left-radius: 0px;
+		display:block;
+		margin:20px auto 20px auto;
+		background-color: #fffffe;
+		box-shadow:1px 1px 1px 1px var(--primary-color);
+		word-break: break-word;
+	}
+
+	#messageContainer > sup{
+		display:block;
+		padding: 5px;
+		background-color:var(--primary-color);
+		color:#fffffe;
+		margin: 0px;
+	}
+
+	#messageContainer > p{
+		padding:0px 10px 0px 10px;
+	}
+
+	#buttons{
+		margin-left: 85%;
+		padding-bottom: 10px;
+	}
+
+	#buttons > span  > i{
+		margin-right: 10px;
+	}
+
+	#buttons > span > i:hover{
+		font-size:25px;
+	}
+
+	#top{
+		display:block;
+		margin-top:20px;
+		margin-left:90px;
+	}
+
+	#records{
+		background-color:var(--primary-color);
+		color: #fffffe;
+		text-align:center;
+		width:70%;
+		padding:10px;
+		display:none;
+		margin:20px auto 20px auto;
+		border-radius:10px;
+	}
+
+	#top-heading{
+		display:block;
+		color: var(--primary-color);
+		text-align:center;
+		margin-top: 20px;
+	}
+
+ 	#back-btn{
+		background-color:var(--primary-color);
+		color:white;
+		border-radius: 10px;
+		padding: 10px;
+		border: 2px solid  var(--primary-color);
+		display: none;
+		margin: 20px auto 20px auto;
+	}
+
+	#searchInput{
+		border-radius: 10px;
+		padding:10px;
+		outline-style: none;
+		width:200px;
+		background-color: #fffffe;
+		border:2px solid var(--primary-color);
+	}
+
+	#messageInput, #editMessageInput{
+		width:70%;
+		height:40%;
+		background-color: #fffffe;
+		box-shadow:2px 2px 2px 2px var(--primary-color);
+		outline-style: none;
+		border-radius: 10px;
+		margin:30px auto 20px auto;
+		display:block;
+		padding: 10px;
+	}
+
+	.swal-button.swal-button--confirm{
+		background-color: var(--primary-color);
+	}
+
+	.swal-button.swal-button--confirm:hover{
+		background-color: var(--secondary-color);
+		box-shadow: 2px 2px 2px 2px var(--secondary-color)
+	}
+
+	#idiary-loader, #idiary-back-loader{
+		display:none;
+		margin-right: 10px;
+	}
+
+	#overlay{
+	height: 100vh;
+	position:fixed;
+	display:none;
+	background-color:var(--light-color);
+	opacity:0.7;
+	top: 0;
+ 	left: 0;
+  	right: 0;
+  	bottom: 0;
+	}
+
+	@media screen and (max-width:500px){
+		#top{
+			margin-left:40px;
+		}
+
+		#searchInput{
+			width:60%;
+			margin-right: 20px;
+		}
+
+		#addNew-btn{
+			display:block;
+			margin:10px auto 0px auto;
+		}
+
+		#buttons{
+			margin-left: 70%;
+		}
+
+		#addNew, #editNew{
+			width:80%;
+		}
+
+		#submitNewMessage-btn, #editedMessage-btn{
+			margin-left:20%;
+		}
+	
+		#cancel{
+			margin-right:20%;
+		}
+
+	}
+

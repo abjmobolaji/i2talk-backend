@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="Description" content="i2talk">
+        <meta name="Keywords" content="Chat App, Chat rooms, Message Scheduling, Location-based User search, chats, iDiary, iSchedule, iReminder, iSearch">
+        <!-- Bootstrap CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="/css/all.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="/css/desktop.css">
+        
+        
+        <title>i2talk | Sign Up</title>
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header class="section">
+            <!-- Navigation Bar -->
+            
+            <nav>
+                <ul class="navbar navbar-container">
+                    <li class="logo"><a href="/"><img class="logo-img" src="/img/logo.svg"></a></li>
+                    <li class="item"><a href="/">Home</a></li>
+                    <li class="item"><a href="./about.html">About</a></li>        		
+                    <li class="item current"><a href="./signup" class="">Sign Up</a></li>
+                    <li class="item"><a href="./login">Log In</a></li>
+                    <li class="item"><a href="./contact.html">Contact Us</a></li>
+                    <li class="toggle"><a href="#"><i class="fas fa-bars"></i></a></li>
+                </ul>
+                
+            </nav>
+            
+        </header>
+
+                
+        <main>
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="form-img col-lg">
+                        <img src="/img/mobile-login.svg" class="img-fluid mobile-img" alt="Responsive image">
+                        <img src="/img/desktop-login.svg" class="img-fluid desktop-img" alt="Responsive image">
+                    </div>
+                    
+                    <div class="form-tab">
+                        <div style="background:#110E4C; color:aliceblue; padding: 10px; border-radius: 5px;" >
+                            <h5>Sign Up</h5>
+                        </div>
+                        <div class="tab-content" id="pills-tabContent" style="font-size: 18px;">
+                            <div class="tab-pane fade show active" id="pills-sign-up" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <form id="signUpForm">
+                                    <div class="sign-form">
+                                        <div id="error-signup"></div>
+                                        <label for="Full-name">Full Name</label>
+                                        <input type="text" id="fullNames" placeholder="Enter Your Full Name" required>
+                
+                                        <label for="User-name">Username</label>
+                                        <input type="text" id="userName" placeholder="Enter Desired Username" required>
+                                    
+                                        <label for="email">Email</label>
+                                        <input type="email" id="mail" placeholder="example@email.com" required>
+
+                                        <label for="location">Location:</label>
+                                    <select id="userLocation" required>
+                                    <option value="none" disabled selected>--Select State--</option>
+                                    <option value="Abia">Abia</option>
+                                    <option value="Adamawa">Adamawa</option>
+                                    <option value="Akwa Ibom">Akwa Ibom</option>
+                                    <option value="Anambra">Anambra</option>
+                                    <option value="Bauchi">Bauchi</option>
+                                    <option value="Bayelsa">Bayelsa</option>
+                                    <option value="Benue">Benue</option>
+                                    <option value="Borno">Borno</option>
+                                    <option value="Cross River">Cross River</option>
+                                    <option value="Delta">Delta</option>
+                                    <option value="Ebonyi">Ebonyi</option>
+                                    <option value="Edo">Edo</option>
+                                    <option value="Ekiti">Ekiti</option>
+                                    <option value="Enugu">Enugu</option>
+                                    <option value="Abuja">Abuja (FCT)</option>
+                                    <option value="Gombe">Gombe</option>
+                                    <option value="Imo">Imo</option>
+                                    <option value="Jigawa">Jigawa</option>
+                                    <option value="Kaduna">Kaduna</option>
+                                    <option value="Kano">Kano</option>
+                                    <option value="Katsina">Katsina</option>
+                                    <option value="Kebbi">Kebbi</option>
+                                    <option value="Kogi">Kogi</option>
+                                    <option value="Kwara">Kwara</option>
+                                    <option value="Lagos">Lagos</option>
+                                    <option value="Nasarawa">Nasarawa</option>
+                                    <option value="Niger">Niger</option>
+                                    <option value="Ogun">Ogun</option>
+                                    <option value="Ondo">Ondo</option>
+                                    <option value="Osun">Osun</option>
+                                    <option value="Oyo">Oyo</option>
+                                    <option value="Plateau">Plateau</option>
+                                    <option value="Rivers">Rivers</option>
+                                    <option value="Sokoto">Sokoto</option>
+                                    <option value="Taraba">Taraba</option>
+                                    <option value="Yobe">Yobe</option>
+                                    <option value="Zamfara">Zamfara</option>
+                                </select>
+
+                                <label for="sex">Sex:</label>
+                                <select id="gender" required>
+                                    <option value="none" disabled selected>-- Select Sex --</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                
+                                <label for="phone">Phone Number:</label>
+                                <input type="tel" id="phone-number" placeholder="Enter Phone Number" required>
+                
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" placeholder="Enter Password" required>
+                                        
+                                        <label for="confirm-password">Confirm Password</label>
+                                        <input type="password" id="c-password" placeholder="Enter Password Again" required>
+                
+                                        <p><small>By clicking Sign Up, you agree to our <a href="./terms.html" style="color: #ded304;">Terms</a>, 
+                                            <a href="./security&privacy.html" style="color: #ded304;">Privacy Policy</a>. 
+                                            You may receive SMS notifications from us and can opt out at any time.</small>
+                                        </p>
+                                        
+                                        <button class="signbtn" type="submit">Sign Up</button>
+                                                                                <p> Already have an account? <a href="/login">Log In</a></p>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->		
+        <footer id="footer">
+            <div class="footer-row">
+                <div class="box">
+                    <h3><span>Quicklinks</span></h3>
+                <!-- Social Links -->
+                    <div>
+                        <ul>
+                            <li><a href="./about.html">Features</a></li>
+                            <li><a href="./faq.html">FAQs</a></li>
+                            <li><a href="./contact.html">Help</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <h3><span>Products</span></h3>
+                    <!-- Social Links -->
+                    <div>
+                        <ul>
+                            <li><a href="./about.html">Explore</a></li>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./contact.html">Help Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <h3><span>Our Company</span></h3>
+                    <!-- Social Links -->
+                    <div>
+                        <ul>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact Us</a></li>
+                            <li><a href="./security&privacy.html">Security &amp; Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>		
+            <div class="footer-bar">
+                <p>i2talk &copy; 2020, All Rights Reserved.</p>
+            </div>
+        </footer>
+
+
+
+        <!-- Bootstrap JS -->
+        <script src="/js/user.js"></script> 
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
+        <!-- Javascript -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>    
+    </body>
+</html>

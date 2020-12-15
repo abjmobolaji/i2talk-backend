@@ -1,0 +1,91 @@
+{{#extend "stylesheets"}}
+<link rel="stylesheet" href="/css/dashboard/chatroom.css">
+{{/extend}}
+
+
+<div class="chat-message-container" id="user-msg-container">
+    <div id ="chatrooms-container">
+
+      <nav class="chatrooms-title-bar">
+        <a class="message-back-arrow" onclick="backToMenu('user-chat-menu', 'user-msg-container')"><i class="fas fa-long-arrow-alt-left"></i></a>
+        <h2 id="chatrooms-feature-title">Chat Rooms</h2>
+  
+        <span style="font-size:25px; color:#fff;">
+            <i class="fas fa-cog"></i>
+        </span>
+      </nav>
+  
+        <div class="chatrooms-heading">
+          <h3 id="chatrooms-btn" onclick="showChatroomsPage()">Chat Rooms</h3>
+          <h3 id="active-btn" onclick="showActivePage()">Active (3)</h3>
+        </div>
+  
+        <div id="chatrooms-page">
+  
+       
+  
+        </div>
+  
+        <div id="active-page">
+  
+          {{!-- <div class="chatrooms-items">
+            <span style="font-size:35px; color:#110E4C;">
+              <i class="fas fa-hashtag"></i>
+            </span>
+            <div>
+              <h3 onclick="enterChatroom(this)" id="trending" data-chatroom-id="PovJhPdtftwtpa0O1AZH" data-chatroom-name="Trending">Trending</h3>
+              <p>Discussions about the latest, new and trending topics e.g #EndSars</p>
+            </div>
+          </div>
+          </div>
+  
+          <div class="chatrooms-items">
+            <span style="font-size:35px; color:#110E4C;">
+              <i class="fas fa-tshirt"></i>
+            </span>
+            <div>
+              <h3 onclick="enterChatroom(this)" id="fashion" data-chatroom-id="jImutgDHM89GSYjARdqL" data-chatroom-name="Fashion">Fashion</h3>
+              <p>Discussions on the latest fashion trends e.g alte fashion</p>
+            </div>
+          </div>
+  
+          <div class="chatrooms-items">
+            <span style="font-size:35px; color:#110E4C;">
+              <i class="fas fa-hand-holding-heart"></i>
+            </span>
+            <div>
+              <h3 onclick="enterChatroom(this)" id="advice" data-chatroom-id="UxtMVlgP6nqJMVXXNXlC" data-chatroom-name="Advice">Advice</h3>
+              <p>Discussions on matters of the heart and heart-to-heart conversations</p>
+            </div>
+          </div> --}}
+            
+        </div>
+  
+    </div>
+  </div>
+  
+
+</div>
+
+{{#extend "scripts"}}
+<script>
+  function showActivePage(){
+    document.getElementById("chatrooms-page").style.display="none"
+    document.getElementById("active-page").style.display="block"
+    document.getElementById("chatrooms-btn").style.backgroundColor="var(--primary-color)"
+    document.getElementById("chatrooms-btn").style.color="#fffffe"
+    document.getElementById("active-btn").style.backgroundColor="var(--secondary-color)"
+    document.getElementById("active-btn").style.color="var(--primary-color)"
+  }
+
+  function showChatroomsPage(){
+    document.getElementById("chatrooms-page").style.display="block"
+    document.getElementById("active-page").style.display="none"
+    document.getElementById("chatrooms-btn").style.backgroundColor="var(--secondary-color)"
+    document.getElementById("chatrooms-btn").style.color="var(--primary-color)"
+    document.getElementById("active-btn").style.backgroundColor="var(--primary-color)"
+    document.getElementById("active-btn").style.color="#fffffe"
+  }
+</script>
+<script src="/js/dashboard/chatroom.js"></script>
+{{/extend}}
