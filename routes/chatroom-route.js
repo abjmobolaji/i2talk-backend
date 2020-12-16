@@ -10,9 +10,11 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 
+
 router.get('/', auth.authenticateUser, chatRoomsControllers.getAllChatRooms);
 
 router.get('/:id', auth.authenticateUser, chatRoomsControllers.getChatRoom);
 
+router.get('/messages/:id', auth.authenticateUser, chatRoomsControllers.getChatRoomMessages);
 
 module.exports = router;

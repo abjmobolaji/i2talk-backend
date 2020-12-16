@@ -21,7 +21,7 @@ const iSearchLocationName = async (req, res, next) => {
      } catch (error) {
        return next(error)
      }
-    const sql = `SELECT id, fullName, state, latitude, longitude, (((acos(sin(('${coordinates.lat}'*pi()/180)) * sin((latitude*pi()/180)) +
+    const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${coordinates.lat}'*pi()/180)) * sin((latitude*pi()/180)) +
      cos(('${coordinates.lat}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${coordinates.lng}' - longitude)
       * pi()/180)))) * 180/pi()) * 60 * 1.1515 * 1.609344) 
       as distance FROM users WHERE NOT username = '${username}' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
@@ -36,7 +36,7 @@ const iSearchLocationName = async (req, res, next) => {
 const iSearchGeoLocation = (req, res, next) => {
     const username = req.data.username;
     const { latitude, longitude, kilometer} = req.body;
-    const sql = `SELECT id, fullName, state, latitude, longitude, (((acos(sin(('${latitude}'*pi()/180)) * sin((latitude*pi()/180)) +
+    const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${latitude}'*pi()/180)) * sin((latitude*pi()/180)) +
     cos(('${latitude}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${longitude}' - longitude)
      * pi()/180)))) * 180/pi()) * 60 * 1.1515 * 1.609344) 
      as distance FROM users WHERE NOT username = '${username}' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
