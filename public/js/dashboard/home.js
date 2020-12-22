@@ -10,6 +10,7 @@ function getUserDetails(token, id) {
       }).then((response) => {
         if (response.status == 200){
           response.json().then((data) => {
+            console.log(data)
             profile = `<div class="side-profile-img">
             <img src="/img/connect.jpg">
             </div>

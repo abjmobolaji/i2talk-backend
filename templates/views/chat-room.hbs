@@ -1,3 +1,27 @@
+{{#extend "stylesheets"}}
+	<style>
+     .progress-bar {
+         height: 35px;
+         width: 250px;
+         border: 2px solid darkblue;
+     }
+
+     .progress-bar-fill {
+         height: 100%;
+         width: 0%;
+         background-color: lightblue;
+         display: flex;
+         align-items: center;
+         transition: width 0.25s;
+     }
+
+     .progress-bar-text {
+         margin-left: 10px;
+         font-weight: bold;
+     }
+	</style>
+{{/extend}}
+
 <div class="chat-message-container">
 		<div class="chat-message" id="user-direct-chat">
 			<!-- Enter your code here -->
@@ -25,7 +49,8 @@
 			<div class="chat-form">
 				<form id="messageForm">
 					<textarea id="msg-input" autocapitalize= "sentences" autocomplete="on" placeholder="Type message here ..." rows="1"></textarea>
-					<button id="msg-btn"><i class="far fa-paper-plane"></i></button>
+					<button id="pmsg-btn" onClick="submitFunction(1)"><i class="far fa-paper-plane"></i></button>
+					<button id="upload_btn" onClick="submitFunction(2)"><i class="far fa-file"></i></button>
 				</form>
 			</div>
 		</div>
@@ -35,6 +60,7 @@
 
 {{#extend "scripts"}}
 <script src="/socket.io/socket.io.js"></script>
+<script src="/siofu/client.js"></script>
 {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script> --}}
 <script src="/js/dashboard/chat-room.js"></script>
 {{/extend}}

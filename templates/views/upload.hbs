@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload Files</title>
+<script src="/siofu/client.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+ <style>
+     .progress-bar {
+         height: 35px;
+         width: 250px;
+         border: 2px solid darkblue;
+     }
+
+     .progress-bar-fill {
+         height: 100%;
+         width: 0%;
+         background-color: lightblue;
+         display: flex;
+         align-items: center;
+         transition: width 0.25s;
+     }
+
+     .progress-bar-text {
+         margin-left: 10px;
+         font-weight: bold;
+     }
+ </style>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(){
+    // Initialize instances:
+    var socket = io.connect();
+    var siofu = new SocketIOFileUpload(socket);
+ 
+    const progressBarFill = document.querySelector("#progressBar > .progress-bar-fill");
+    const progressBarText = progressBarFill.querySelector(".progress-bar-text")
+ 
+    // Configure the three ways that SocketIOFileUpload can read files:
+    document.getElementById("upload_btn").addEventListener("click", siofu.prompt, false);
+    siofu.listenOnInput(document.getElementById("upload_input"));
+    siofu.listenOnDrop(document.getElementById("file_drop"));
+ 
+
+    // Do something on upload progress:
+    siofu.addEventListener("progress", function(event){
+        var percent = event.bytesLoaded / event.file.size * 100;
+        console.log("File is", percent.toFixed(2), "percent loaded");
+        progressBarFill.style.width = percent.toFixed(2) + "%";
+        progressBarText.textContent = percent.toFixed(2) + "%";
+
+    }); 
+ 
+    // Do something when a file is uploaded:
+    siofu.addEventListener("complete", function(event){
+        console.log(event.success);
+        console.log(event.file);
+        
+    });
+    
+    var data = {
+            chatID: "ade",
+            dateTime : "baba",
+            message : "hello there",
+            isender: "rasheed",
+            receiver: "ayoade"
+    };
+    siofu.addEventListener("start", function(event){
+        event.file.meta.hello = data;
+        event.file.meta.hallo = "working";
+    });
+
+
+}, false);
+</script> 
+ 
+</head>
+<body>
+     {{!-- const uploadForm = document.getElementById("");
+    const inpFile = document.getElementById("inpFile"); --}}
+<p><button id="upload_btn">Prompt for File</button></p>
+<p><label>Choose File: <input type="file" id="upload_input"/></label></p>
+<div id="file_drop" dropzone="copy" title="drop files for upload">Drop File</div>
+ 
+ <div class="progress-bar" id="progressBar">
+     <div class="progress-bar-fill">
+         <span class="progress-bar-text">0%</span>
+     </div>
+ </div>
+
+</body>
+</html>
+

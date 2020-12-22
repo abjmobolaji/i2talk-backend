@@ -22,6 +22,60 @@ function ChatScreenName(chatroomiid) {
     return fresult;
 }
 
+const socket = io();
+socket.emit('chats', isender);
+
+socket.on('chatlist', response => {
+  // console.log(message)
+  outputChats(response)
+
+  // scroll down
+  // chatMessages.scrollTop = chatMessages.scrollHeight;
+})
+
+function outputChats(response) {
+  console.log(response)
+  chatScreen.innerHTML = "";
+  
+        var chatMessages = response;
+        var s = document.createTextNode(`${chatMessages.length}`); 
+      chatNo.innerHTML=""    // Create a text node
+      chatNo.appendChild(s);
+      if (chatMessages.length < 1) {
+      chatNo.style.display = "none";
+      chatScreen.innerHTML=""
+      chatScreen.innerHTML+= `
+      <div id="chat-center">
+      <h2>No Conversations yet!</h2>
+      <h4>Click <a href ="/isearch">here</a> to search for users and start chatting</h4>
+      </div>
+      `
+      } else {
+      chatScreen.innerHTML=""
+      for (i=0; i<chatMessages.length; i++) {
+      // const dP = getChatDp(ChatScreenName(data[i].chatID))
+      latest=""
+      latest += `
+      <div class="chat-box">
+      <div class="chat-box-col1">
+      <div class="chat-box-img">
+        <img src="/img/dummy-profile.jpg">
+      </div>
+      </div>
+      <div class="chat-box-col2">
+      <h4 onclick="newChat(this)" data-username="${ChatScreenName(chatMessages[i].chatID)}">${ChatScreenName(chatMessages[i].chatID)}</h4> 
+      <span class="chat-counter">1</span>
+      <p>${chatMessages[i].lastMessage}</p>
+      <h6>${chatMessages[i].updatedAt}</h6>
+      </div>
+      </div>
+      `
+      chatScreen.innerHTML += latest;
+      }}
+
+};
+
+
 function getChatUserMessages(token, isender) {
     fetch(`http://localhost:3000/api/chats/${isender}`, {
           headers: {
@@ -30,7 +84,7 @@ function getChatUserMessages(token, isender) {
         }).then((response) => {
           if (response.status == 200){
             response.json().then((data) => {
-                console.log(data.data)
+                // console.log(data.data)
                 var chatMessages = data.data;
                 var s = document.createTextNode(`${chatMessages.length}`); 
     chatNo.innerHTML=""    // Create a text node
@@ -60,7 +114,7 @@ function getChatUserMessages(token, isender) {
               <h4 onclick="newChat(this)" data-username="${ChatScreenName(chatMessages[i].chatID)}">${ChatScreenName(chatMessages[i].chatID)}</h4> 
               <span class="chat-counter">1</span>
               <p>${chatMessages[i].lastMessage}</p>
-              <h6>${chatMessages[i].updatedAt}</h6>
+              <h6>${ToTime(chatMessages[i].updatedAt)}</h6>
             </div>
           </div>
         `
@@ -74,13 +128,13 @@ function getChatUserMessages(token, isender) {
         }).catch(function(error) {
           console.log('Request failed', error)
       });
-  }
+};
+
 getChatUserMessages(token, isender);
 
 function ToTime(newtime) {
-    const milliseconds = newtime.seconds * 1000;
-    const date = new Date(milliseconds);
-    const time = date.toLocaleString();
+    // const date = new Date(newtime);
+    const time = moment(newtime).format('LLLL');
     return time;
 }
 

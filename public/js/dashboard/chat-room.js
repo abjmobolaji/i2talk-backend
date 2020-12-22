@@ -11,11 +11,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const roomId = urlParams.get('id');
 const roomName = urlParams.get('name')
-
-
-
-const socket = io();
-
+var siofu = new SocketIOFileUpload(socket);
 
 socket.emit('joinRoom', { username, userID, roomName, roomId });
 
@@ -28,15 +24,61 @@ socket.on('message', message => {
 })
 
 
-
-messageForm.addEventListener("submit", event => {
-    event.preventDefault();
-    var msg = msgInput.value;
-    socket.emit('chatMessage', msg)
+function submitFunction(i) {
+    if (i==1) {
+        var msg = msgInput.value;
+        socket.emit('chatMessage', msg)
+    }
+    if (i==2) {
+        document.getElementById("upload_btn").addEventListener("click", siofu.prompt, false);
+        let loader = `
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-bar-fill">
+                        <span class="progress-bar-text">0%</span>
+                    </div>
+                </div>
+        `
+    messageScreen.innerHTML += loader;
+    document.getElementById("messages").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    //     var chatData = {
+    //         chatID,
+    //         isender,
+    //         receiver
+    // };
+    siofu.addEventListener("start", function(event){
+        // event.file.meta.chatRoom = chatData;
+        event.file.meta.type = "chatRoom";
+    });
+    // Do something on upload progress:
+    siofu.addEventListener("progress", function(event){
+        const progressBarFill = document.querySelector("#progressBar > .progress-bar-fill");
+    const progressBarText = progressBarFill.querySelector(".progress-bar-text")
+        var percent = event.bytesLoaded / event.file.size * 100;
+        console.log("File is", percent.toFixed(2), "percent loaded");
+        progressBarFill.style.width = percent.toFixed(2) + "%";
+        progressBarText.textContent = percent.toFixed(2) + "%";
+    }); 
+ 
+    // Do something when a file is uploaded:
+    siofu.addEventListener("complete", function(event){
+        console.log(event.success);
+        if (event.success) {
+    
+        console.log(event.file);
+        }
+        
+    });
+    
+    
+    }
 
     // clear message input
     msgInput.value = '';
     msgInput.focus(); 
+}
+
+messageForm.addEventListener("submit", event => {
+    event.preventDefault();
 });
 
 messageForm.addEventListener('keypress', handleKeyPress);
@@ -81,7 +123,31 @@ timeoutVal = 1000; // time it takes to wait for user to stop typing in ms
     }
 
 function outputMessage(message) {
-    if (message.username === username) {
+    if(message.attachment === true) {
+        if (message.username === username) {
+            var msg = `
+            <li class="mchat-msg-self">
+            <span id="chat-new">
+            <p>Attachment<p>
+            <p>Name: ${message.fileName} Sent</p>
+            </span>
+        </li>
+        `
+        document.getElementById("progressBar").style.display = "none";
+        } else {
+            var msg = `
+            <li class="mchat-msg-other">
+            <span id="chat-new">
+            <p><i class="namee">${message.username}</i></p>
+            <p>Attachment<p>
+            <p>Name: ${message.fileName}</p>
+            <p><a href = "http://localhost:3000/attachment/${message.fileName}">Download file</a><p>
+            </span>
+        </li>
+        `
+        }
+        
+    } else if (message.username === username) {
             var msg = `
             <li class="mchat-msg-self">
             <span id="chat-new">
@@ -115,11 +181,35 @@ function getChatRooms(token, roomId) {
               for (i=0; i<= chatRoomMessages.length; i++) {
                 if(chatRoomMessages[i]!=null || chatRoomMessages[i]!=undefined )
                 {
-                    if (chatRoomMessages[i].username === username) {
+                    if (chatRoomMessages[i].isMessage === 0) {
+                        if (chatRoomMessages[i].username === username) { 
+                            var msg = `
+                        <li class="mchat-msg-self">
+                        <span id="chat-new">
+                          <p>Attachment</p>
+                          <p>Name: ${chatRoomMessages[i].fileName} Sent</p>
+                        </span>
+                    </li>
+                    `
+                         } 
+                        else {
+                                var msg = `
+                                <li class="mchat-msg-other">
+                                <span id="chat-new">
+                                <p><i class="namee">${chatRoomMessages[i].username}</i></p>
+                                <p>Attachment</p>
+                                <p>Name: ${chatRoomMessages[i].fileName}</p>
+                                <p><a href = "${chatRoomMessages[i].filePath}">Download file</a><p>
+                                </span>
+                            </li>
+                            `
+                        }
+                        
+                } else if (chatRoomMessages[i].username === username) {
                         var msg = `
                         <li class="mchat-msg-self">
                         <span id="chat-new">
-                        <p><b>${chatRoomMessages[i].timePosted}</b> - ${chatRoomMessages[i].message}<p>
+                        <p><b>${ToTime(chatRoomMessages[i].timePosted)}</b> - ${chatRoomMessages[i].message}<p>
                         </span>
                     </li>
                     `
@@ -148,81 +238,10 @@ function getChatRooms(token, roomId) {
 }
 getChatRooms(token, roomId);
 
-// var unsubscribe = msgRef.where("chat_room_id", "==", chatId).onSnapshot(snapshot => {
-//         if (snapshot.docChanges()[0] === undefined) {
-    //         const msg = `
-    //             <li id="no-msg" class="mchat-msg-other">
-    //             <span id="chat-new">
-    //             <p>No Previous Messages found. Send message now to Start Chatting!</p>
-    //             </span>
-    //         </li>
-    // `
-    // messageScreen.innerHTML += msg;
-    // setTimeout(function(){ 
-    // var elem = document.querySelector('#no-msg');
-    // elem.parentNode.removeChild(elem);
-    // }, 3000);
-
-//         } else {
-//         shown = snapshot.docChanges()[0].doc.data()
-//         // console.log(shown)
-//         const {sender, text} = shown;
-//         if (shown) {
-//             if (!shown.createdAt && snapshot.metadata.hasPendingWrites) {
-//                 // we don't have a value for createdAt yet
-//                 // const ts = firebase.firestore.Timestamp.now()
-//                 // console.log(`timestamp: ${ts} (estimated)`)
-//             }
-//             else {
-//                 // now we have the final timestamp value
-                
-//                 // console.log(`timestamp: ${shown.createdAt} (actual)`)
-//             }}
-//         }
-//         leaveRoom.addEventListener("click", function() {
-//             unsubscribe();
-//             localStorage.removeItem("chatId");
-//             window.location.assign("chatroom.html")
-//         })
-//     });
-
-// function showChats() {
-//     msgRef.where("chat_room_id", "==", chatId).orderBy("timestamp", "asc").get().then((querySnapshot) => {                                                                                                                                                                                                                                                                                                                                              
-//         querySnapshot.forEach((doc) => {
-//             const {sender, text} = doc.data();
-//             if (sender === loggedUser) {
-//                 var msg = `
-//                     <li class="mchat-msg-self">
-//                     <span id="chat-new">
-//                     <p>${text}<p>
-//                     </span>
-//                 </li>
-//                 `
-//             } else {
-//                 var msg = `
-//                 <li class="mchat-msg-other">
-//                 <span id="chat-new">
-//                 <p><i class="namee">${sender}: </i> ${text}</p>
-//                 </span>
-//             </li>
-//             `
-//             }
-//     messageScreen.innerHTML += msg;
-//         });
-//     });
-//     setTimeout(function(){ document.getElementById("messages").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})}, 1000);
-// }
-
-
-// Chat room
-
-// function enterChatroom(chatroomName) {
-//     ChatroomName = chatroomName.getAttribute("data-chatroom-name");
-//     localStorage.setItem("chatroomName", JSON.stringify(ChatroomName));
-//     chatId = chatroomName.getAttribute("data-chatroom-id");
-//     localStorage.setItem("chatId", JSON.stringify(chatId));
-//     window.location.assign(`chat-room.html`)
-// }
-
+function ToTime(newtime) {
+    // const date = new Date(newtime);
+    const time = moment(newtime).format('h:mm a')
+    return time;
+}
 var t = document.createTextNode(`${roomName} Group Chat`);     // Create a text node
 Chatheader.appendChild(t);

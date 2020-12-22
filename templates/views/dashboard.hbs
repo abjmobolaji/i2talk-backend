@@ -7,9 +7,12 @@
 	<meta name="Description" content="i2talk">
 	<meta name="Keywords" content="Chat App, Chat rooms, Message Scheduling, Location-based User search, chats, iDiary, iSchedule, iReminder, iSearch">
 		
-		
+	<script src="https://kit.fontawesome.com/fcf53b0bbf.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/css/dashboard/all.css">
 	<link rel="stylesheet" href="/css/dashboard/styles.css">
+	<link rel="stylesheet" href="/css/foxx.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
     {{{block "stylesheets"}}}
 	
 	<title>i2talk | {{title}} </title>
@@ -28,7 +31,7 @@
   	<div id="side-menu-container" class="side-menu">
         <ul class="side-menu">
         <li><a href="/chatroom"><i class="fas fa-comments fa-1x"></i> Chat Rooms</a></li>
-        <li><a href="/idiary"><i class="fas fa-book fa-1x"></i> iDiary</a></li>
+        <li><a href="/idairy"><i class="fas fa-book fa-1x"></i> iDiary</a></li>
         <li><a href="/ireminder"><i class="fas fa-business-time fa-1x"></i> iReminder</a></li>
         <li><a href="/isearch"><i class="fas fa-search fa-1x"></i> iSearch</a></li>
         <li><a href="/settings"><i class="fas fa-cog fa-1x"></i> Settings</a></li> 
@@ -64,11 +67,14 @@
 </div>
   {{{body}}}
 </div>
-
 {{!-- <script src="./assets/js/common/users.js"></script>
 <script src="./assets/js/chats/chat-msg.js"></script> --}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/siofu/client.js"></script>
 <script src="/js/dashboard/home.js"></script>
 <script src="/js/dashboard/main.js"></script>
+<script src="/js/foxx.js"></script>
  {{{block "scripts"}}}
 </body>
 </html>

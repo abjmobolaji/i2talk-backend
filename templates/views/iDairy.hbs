@@ -1,0 +1,70 @@
+{{#extend "stylesheets"}}
+<link rel="stylesheet" href="/css/dashboard/iDiary.css">
+{{/extend}}
+
+<div class="chat-message-container" id="user-msg-container">
+			<div class="iDiary-container">
+
+				<nav class="title-bar">
+					<a class="message-back-arrow" onclick="backToMenu('user-chat-menu', 'user-msg-container')"><i class="fas fa-long-arrow-alt-left"></i></a>
+					<h2 id="featureTitle">iDiary</h2>
+					
+					<span style="font-size:25px; color:#fff;">
+						<i class="fas fa-ellipsis-v"></i>
+						<i class="fas fa-cog"></i>
+					</span>
+				
+				</nav>
+
+				<div id="overlay"></div>
+				
+				<!--SEARCH MESSAGES-->
+				<div id="top">
+					<input type="text" id="searchInput" placeholder="Search saved notes" />
+					<button onclick="displayLoader()" id="search-btn"><img src="../assets/img/ajax-loader.gif" width="15px" id="idiary-loader">Search</button>
+					<button id="addNew-btn" onclick="addNewMessage()"><i class="fas fa-plus-circle"></i> Add New Note</button>
+				</div>
+			
+			
+				<!--DISPLAY THE NUMBER OF RECORDS FOUND AFTER SEARCH-->
+				<h3 id="records"></h3>
+			
+			
+				<!--BUTTON TO GO BACK TO ALL MESSAGES DISPLAY AFTER SEARCH-->
+				<button id="back-btn" onclick="displayBackLoader()"><img src="../assets/img/ajax-loader.gif" width="15px" id="idiary-back-loader">Back to notes</button>
+			
+			
+				<!--FORM TO ADD NEW MESSAGE-->
+				<div id="addNew">
+					<textarea type="text" placeholder="Enter your message" name="message" id="messageInput"></textarea>
+					<div>
+						<button id="submitNewMessage-btn" onclick="displayAddedMessage()">Add</button>
+						<button id="cancel" onclick="back()">Cancel</button>
+					</div>
+				</div>
+			
+			
+				<!--FORM TO EDIT MESSAGE-->
+				<div id="editNew">
+					<input type="hidden" id="messageId">
+					<textarea type="text" placeholder="" name="message" id="editMessageInput"></textarea>
+					<div>
+						<button id="editedMessage-btn" onclick="displayEditedMessage()">Add Changes</button>
+						<button id="cancel" onclick="back()">Cancel</button>
+					</div>
+				</div>
+			
+				<h3 id="top-heading">Saved Notes</h3>
+			
+			
+				<!--ALL MESSAGES ARE DISPLAYED HERE-->
+				<div id="messages">
+				
+				</div>
+			
+			</div>
+		
+		</div>
+{{#extend "scripts"}}
+<script src="/js/dashboard/idiary.js"></script>
+{{/extend}}

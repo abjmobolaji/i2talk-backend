@@ -19,7 +19,6 @@ signInForm.addEventListener('submit', (e) => {
             errorMessages.innerHTML = `<b>Invalid Credentials</b>`;
         } else {
             response.json().then((data) => {
-            console.log(data)
             localStorage.setItem("token", JSON.stringify(data));
               window.location.assign("/dashboard");
           }) ;

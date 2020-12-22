@@ -1,3 +1,70 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<style>
+		#chat-new, p {
+			font-size: 12px;
+		}
+     .progress-bar {
+         height: 35px;
+         width: 250px;
+         border: 2px solid darkblue;
+     }
+
+     .progress-bar-fill {
+         height: 100%;
+         width: 0%;
+         background-color: lightblue;
+         display: flex;
+         align-items: center;
+         transition: width 0.25s;
+     }
+
+     .progress-bar-text {
+         margin-left: 10px;
+         font-weight: bold;
+     }
+	</style>
+{{/extend}}
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Message Options</p>
+	<div id="chat-options">
+		<button>Forward</button>
+    	<button id="iDairy-message">Add to iDairy</button>
+    	<button>Delete Message</button>
+	</div>
+</div>
+</div>
+
+<div id="smyModal" class="smodal">
+
+  <!-- Modal content -->
+<div class="smodal-content">
+    <span class="sclose">&times;</span>
+	<div id="schedule-options">
+			<div class="form-group">
+				<div class="input-group datetimepicker">
+					<form id="date">
+					<input id="data" type="text" class="form-control" readonly>
+					<span class="input-group-addon">
+						<span class="fa fa-calendar"></span>
+						+
+						<span class="fa fa-clock-o"></span>
+					</span>
+					<button id="ischedule-message">Schedule message</button>
+					</form>
+				</div>
+			</div>
+
+	</div>
+</div>
+</div>
 
 <div class="chat-message-container">
 		<div class="chat-message" id="user-direct-chat">
@@ -29,16 +96,28 @@
 			<div class="chat-form">
 				<form id="pmessageForm">
 					<textarea id="pmsg-input" autocapitalize= "sentences" autocomplete="on" placeholder="Type message here ..." rows="1"></textarea>
-					<button id="pmsg-btn"><i class="far fa-paper-plane"></i></button>
+					<button id="pmsg-btn" onClick="submitFunction(1)"><i class="far fa-paper-plane"></i></button>
+					<button id="scd-btn" onClick="submitFunction(2)"><i class="far fa-clock"></i></button>
+					<button id="upload_btn" onClick="submitFunction(3)"><i class="far fa-file"></i></button>
 				</form>
 			</div>
 		</div>
 	</div>
 	
 </div>
+{{!-- <button id="myBtn">Open Modal</button> --}}
+
+<!-- The Modal -->
 
 {{#extend "scripts"}}
-<script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="/socket.io/socket.io.js"></script> --}}
 <script src="/js/dashboard/privatechat.js"></script>
+<script src="/siofu/client.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>    
+{{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/locale/nl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
 {{/extend}}

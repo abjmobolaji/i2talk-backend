@@ -2,7 +2,8 @@ const connection = require('../models/db');
 
 // Create a reminder
 const createReminder = (req, res, next) => {
-    const { userID, title, message, timeCompleted } = req.body;
+    const { title, message, timeCompleted } = req.body;
+    const userID = req.data.userID;
     const sql = `insert into ireminder (userID, title, message, timeCompleted) values ('${userID}', '${title}', '${message}', '${timeCompleted}')`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 

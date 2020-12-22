@@ -706,9 +706,9 @@ a {
 }
 
 .ireminder-textarea{
-	margin: 40px;
+	margin: 10px;
 	background: #fff;
-	width: 80%;
+	width: 50%;
 	height: 50px;
 	border: 2px solid #110E4C;
 	border-radius: 10px;
@@ -724,7 +724,7 @@ a {
 	outline-style: none;
 }
 
-.ireminder-formarea label{
+.ireminder-formarea p{
 	font-size: 25px;
 	font-weight: 600;
 	margin-top: 5px;
@@ -1085,3 +1085,105 @@ a {
 
 }
 
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 30%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+#chat-options {
+	display: flex;
+	justify-content: space-evenly;
+	justify-items: center;
+	align-items: center;
+}
+
+#chat-options button, #ischedule-message {
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: var(--primary-color);
+	font-size: 15px;
+	color: blanchedalmond;
+	font-weight: bold;
+}
+
+.smodal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .smodal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 30%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .sclose {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+  
+  .sclose:hover,
+  .sclose:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* #schedule-options {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+} */
+
+/* #ischedule-message {
+	margin-top: 10px;
+	margin-right: 5px;
+	padding: 5px;
+	border-radius: 5px;
+} */
