@@ -1,6 +1,6 @@
 var signInForm = document.getElementById('signin-form');
 var errorMessages = document.getElementById("error-login");
-const webLink = "https://i2talk-chat.herokuapp.com"
+const webLink = "https://i2talk.live"
 
 signInForm.addEventListener('submit', (e) => {
     const login = document.getElementById("login").value;
