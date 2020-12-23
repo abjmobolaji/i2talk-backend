@@ -1,7 +1,7 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var userID = userData.data.userID 
 var token = userData.accessToken
-const webLink = "https://i2talk-chat.herokuapp.com";
+const webLink = "https://i2talk.live";
 
 function getUserDetails(token, id) {
   fetch(`${webLink}/api/users/${id}`, {

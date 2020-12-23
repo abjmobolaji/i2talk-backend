@@ -19,7 +19,7 @@ const cors = require("cors");
 
 global.__basedir = __dirname;
 
-var whitelist = ['https://i2talk-chat.herokuapp.com']
+var whitelist = ['https://i2talk-chat.herokuapp.com', 'https://i2talk.live']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
