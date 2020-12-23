@@ -1,9 +1,6 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var token = userData.accessToken
-// const webLink = "https://i2talk-chat.herokuapp.com";
 
-		
-		
 		//DISPLAY LOADER BESIDE THE SEARCH BUTTON BEFORE RESULTS SHOW UP
 		function displayLoader(){
 			document.getElementById("idiary-loader").style.display="inline-block"
