@@ -20,7 +20,7 @@ signupForm.addEventListener('submit', (e) => {
         state: userLocation
     };
     // console.log(JSON.stringify(data));
-    fetch('http://localhost:3000/api/users/signup', {
+    fetch('/api/users/signup', {
         method: "POST",
         body: JSON.stringify(data),
         headers: {"Content-type": "application/json; charset=UTF-8"}

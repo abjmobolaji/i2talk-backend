@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app -e js,hbs"
+    "start": "node app.js",
+    "dev": "nodemon app -e js,hbs"
   },
   "repository": {
     "type": "git",
@@ -47,10 +48,12 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.16",
     "nodemailer-mailgun-transport": "^2.0.2",
-    "nodemon": "^2.0.6",
     "socket.io": "^3.0.4",
     "socketio-file-upload": "^0.7.2",
     "twilio": "^3.54.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

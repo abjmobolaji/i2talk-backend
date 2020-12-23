@@ -45,7 +45,7 @@ console.log(isender)
         socket.emit('reminder', emitData)
         const display = ireminderTitle.value + ireminderDesc.value + "----->"+ ireminder_date.value;
         ireminder_textspace.innerHTML = display;
-        fetch('http://localhost:3000/api/ireminder/add', {
+        fetch('/api/ireminder/add', {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

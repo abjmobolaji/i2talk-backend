@@ -231,7 +231,7 @@ var token = userData.accessToken
 		
 		function displayMessages(){
 
-			fetch(`http://localhost:3000/api/idairy/`, {
+			fetch(`/api/idairy/`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }

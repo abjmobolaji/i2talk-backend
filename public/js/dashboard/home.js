@@ -3,7 +3,7 @@ var userID = userData.data.userID
 var token = userData.accessToken
 
 function getUserDetails(token, id) {
-  fetch(`http://localhost:3000/api/users/${id}`, {
+  fetch(`/api/users/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }
@@ -24,7 +24,7 @@ function getUserDetails(token, id) {
             document.getElementById("profile-box").innerHTML = profileBox; 
           }) ;
         } else {
-          let url = new URL(`http://localhost:3000/login`);
+          let url = new URL(`/login`);
           window.location.assign(url)
         }
       }).catch(function(error) {

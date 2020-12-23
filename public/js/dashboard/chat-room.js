@@ -141,7 +141,7 @@ function outputMessage(message) {
             <p><i class="namee">${message.username}</i></p>
             <p>Attachment<p>
             <p>Name: ${message.fileName}</p>
-            <p><a href = "http://localhost:3000/attachment/${message.fileName}">Download file</a><p>
+            <p><a href = "https://i2talk-chat.herokuapp.com/attachment/${message.fileName}">Download file</a><p>
             </span>
         </li>
         `
@@ -169,7 +169,7 @@ function outputMessage(message) {
 }
 
 function getChatRooms(token, roomId) {
-  fetch(`http://localhost:3000/api/chatrooms/messages/${roomId}`, {
+  fetch(`https://i2talk-chat.herokuapp.com/api/chatrooms/messages/${roomId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }

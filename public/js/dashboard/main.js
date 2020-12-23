@@ -77,7 +77,7 @@ function outputChats(response) {
 
 
 function getChatUserMessages(token, isender) {
-    fetch(`http://localhost:3000/api/chats/${isender}`, {
+    fetch(`/api/chats/${isender}`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -140,7 +140,7 @@ function ToTime(newtime) {
 
 function newChat(username) {
     username = username.getAttribute("data-username");
-    let url = new URL(`http://localhost:3000/privatechat?username=${username}`);
+    let url = new URL(`/privatechat?username=${username}`);
     window.location.assign(url)
     // setTimeout(function(){ window.location.assign(`PrivateChat.html`) }, 500);
 }

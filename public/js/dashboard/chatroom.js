@@ -2,7 +2,7 @@ var userData = JSON.parse(localStorage.getItem("token"))
 var token = userData.accessToken
 
 function getChatRooms(token) {
-  fetch(`http://localhost:3000/api/chatrooms`, {
+  fetch(`/api/chatrooms`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }
@@ -44,7 +44,7 @@ getChatRooms(token);
 function enterChatroom(chatroomName) {
   const ChatroomName = chatroomName.getAttribute("data-chatroom-name");
   const chatId = chatroomName.getAttribute("data-chatroom-id");
-  let url = new URL(`http://localhost:3000/chat-room?id=${chatId}`);
+  let url = new URL(`/chat-room?id=${chatId}`);
   url.searchParams.set('name', ChatroomName)
   window.location.assign(url)
 }

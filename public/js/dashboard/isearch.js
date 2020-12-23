@@ -14,7 +14,7 @@ searchForm.addEventListener("submit", function () {
         "kilometer" : 50000
     };
     timeOut = setTimeout(function() { 
-        fetch(`http://localhost:3000/api/isearch/location`, {
+        fetch(`/api/isearch/location`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -117,7 +117,7 @@ function sortResults(position) {
         "kilometer" : 50000
     };
     timeOut = setTimeout(function() { 
-        fetch(`http://localhost:3000/api/isearch/geolocation`, {
+        fetch(`/api/isearch/geolocation`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -185,7 +185,7 @@ function sortResults(position) {
 
 function newChat(username) {
     username = username.getAttribute("data-username");
-    let url = new URL(`http://localhost:3000/privatechat?username=${username}`);
+    let url = new URL(`/privatechat?username=${username}`);
     window.location.assign(url)
     // setTimeout(function(){ window.location.assign(`PrivateChat.html`) }, 500);
 }

@@ -240,7 +240,7 @@ function outputMessage(message) {
             <span id="chat-new">
             <p>Attachment<p>
             <p>Name: ${message.fileName}</p>
-            <p><a href = "http://localhost:3000/attachment/${message.fileName}">Download file</a><p>
+            <p><a href = "/attachment/${message.fileName}">Download file</a><p>
             </span>
         </li>
         `
@@ -282,7 +282,7 @@ function outputMessage(message) {
 
 
 function getChatMessages(token, chatID) {
-    fetch(`http://localhost:3000/api/chats/messages/${chatID}`, {
+    fetch(`/api/chats/messages/${chatID}`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -364,7 +364,7 @@ function chatOption(chatMessage) {
         var data = {
             message : chatMessagez
         };
-        fetch('http://localhost:3000/api/idairy/add', {
+        fetch('/api/idairy/add', {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
