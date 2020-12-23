@@ -19,9 +19,16 @@ const cors = require("cors");
 
 global.__basedir = __dirname;
 
+var whitelist = ['https://i2talk-chat.herokuapp.com']
 var corsOptions = {
-  origin: "https://i2talk-chat.herokuapp.com/"
-};
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 
 // views path
