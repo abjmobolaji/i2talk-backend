@@ -9,6 +9,7 @@ var messageForm = document.getElementById("pmessageForm");
 var msgInput = document.getElementById("pmsg-input");
 const msgBtn = document.getElementById("pmsg-btn");
 var siofu = new SocketIOFileUpload(socket);
+const webLink = "https://i2talk-chat.herokuapp.com"
  
 // const chatNo = document.getElementsByClassName("chat-counter")[0]
 // const chatImg = document.getElementsByClassName("chat-head-img")[0]
@@ -240,7 +241,7 @@ function outputMessage(message) {
             <span id="chat-new">
             <p>Attachment<p>
             <p>Name: ${message.fileName}</p>
-            <p><a href = "/attachment/${message.fileName}">Download file</a><p>
+            <p><a href = "${webLink}/attachment/${message.fileName}">Download file</a><p>
             </span>
         </li>
         `
@@ -282,7 +283,7 @@ function outputMessage(message) {
 
 
 function getChatMessages(token, chatID) {
-    fetch(`/api/chats/messages/${chatID}`, {
+    fetch(`${webLink}/api/chats/messages/${chatID}`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -364,7 +365,7 @@ function chatOption(chatMessage) {
         var data = {
             message : chatMessagez
         };
-        fetch('/api/idairy/add', {
+        fetch(`${webLink}/api/idairy/add`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

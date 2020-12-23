@@ -1,8 +1,9 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var token = userData.accessToken
+const webLink = "https://i2talk-chat.herokuapp.com";
 
 function getChatRooms(token) {
-  fetch(`/api/chatrooms`, {
+  fetch(`${webLink}/api/chatrooms`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }
@@ -44,7 +45,7 @@ getChatRooms(token);
 function enterChatroom(chatroomName) {
   const ChatroomName = chatroomName.getAttribute("data-chatroom-name");
   const chatId = chatroomName.getAttribute("data-chatroom-id");
-  let url = new URL(`/chat-room?id=${chatId}`);
+  let url = new URL(`${webLink}/chat-room?id=${chatId}`);
   url.searchParams.set('name', ChatroomName)
   window.location.assign(url)
 }

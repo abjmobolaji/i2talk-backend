@@ -8,6 +8,8 @@ var token = userData.accessToken;
 var userID = userData.data.userID;
 var username = userData.data.username;
 var isender = titleCase(userData.data.username);
+const webLink = "https://i2talk-chat.herokuapp.com";
+
 
 
 function titleCase(str) {
@@ -45,7 +47,7 @@ console.log(isender)
         socket.emit('reminder', emitData)
         const display = ireminderTitle.value + ireminderDesc.value + "----->"+ ireminder_date.value;
         ireminder_textspace.innerHTML = display;
-        fetch('/api/ireminder/add', {
+        fetch(`${webLink}/api/ireminder/add`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

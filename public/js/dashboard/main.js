@@ -4,6 +4,7 @@ var isender = titleCase(userData.data.username);
 const chatNo = document.getElementsByClassName("chat-counter")[0]
 const chatImg = document.getElementsByClassName("chat-head-img")[0]
 const chatScreen = document.getElementById("chat-menu");
+const webLink = "https://i2talk-chat.herokuapp.com"
 
 function titleCase(str) {
     const newTitle = str.split(" ");
@@ -77,7 +78,7 @@ function outputChats(response) {
 
 
 function getChatUserMessages(token, isender) {
-    fetch(`/api/chats/${isender}`, {
+    fetch(`${webLink}/api/chats/${isender}`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -140,7 +141,7 @@ function ToTime(newtime) {
 
 function newChat(username) {
     username = username.getAttribute("data-username");
-    let url = new URL(`/privatechat?username=${username}`);
+    let url = new URL(`${webLink}/privatechat?username=${username}`);
     window.location.assign(url)
     // setTimeout(function(){ window.location.assign(`PrivateChat.html`) }, 500);
 }

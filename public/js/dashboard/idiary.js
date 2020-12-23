@@ -1,5 +1,7 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var token = userData.accessToken
+const webLink = "https://i2talk-chat.herokuapp.com";
+
 		
 		
 		//DISPLAY LOADER BESIDE THE SEARCH BUTTON BEFORE RESULTS SHOW UP
@@ -231,7 +233,7 @@ var token = userData.accessToken
 		
 		function displayMessages(){
 
-			fetch(`/api/idairy/`, {
+			fetch(`${webLink}/api/idairy/`, {
           headers: {
             'Authorization': `Bearer ${token}`
         }

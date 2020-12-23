@@ -1,5 +1,6 @@
 var signupForm = document.getElementById('signUpForm');
 var errorMessage = document.getElementById("error-signup");
+const webLink = "https://i2talk-chat.herokuapp.com";
 
 signupForm.addEventListener('submit', (e) => {
     var sex = document.getElementById('gender').value;
@@ -20,7 +21,7 @@ signupForm.addEventListener('submit', (e) => {
         state: userLocation
     };
     // console.log(JSON.stringify(data));
-    fetch('/api/users/signup', {
+    fetch(`${webLink}/api/users/signup`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -52,5 +53,3 @@ signupForm.addEventListener('submit', (e) => {
 })
 e.preventDefault();
 })
-
-

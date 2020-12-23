@@ -1,9 +1,10 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var userID = userData.data.userID 
 var token = userData.accessToken
+const webLink = "https://i2talk-chat.herokuapp.com";
 
 function getUserDetails(token, id) {
-  fetch(`/api/users/${id}`, {
+  fetch(`${webLink}/api/users/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }
@@ -24,7 +25,7 @@ function getUserDetails(token, id) {
             document.getElementById("profile-box").innerHTML = profileBox; 
           }) ;
         } else {
-          let url = new URL(`/login`);
+          let url = new URL(`${webLink}/login`);
           window.location.assign(url)
         }
       }).catch(function(error) {

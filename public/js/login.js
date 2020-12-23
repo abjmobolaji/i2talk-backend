@@ -1,5 +1,6 @@
 var signInForm = document.getElementById('signin-form');
 var errorMessages = document.getElementById("error-login");
+const webLink = "https://i2talk-chat.herokuapp.com"
 
 signInForm.addEventListener('submit', (e) => {
     const login = document.getElementById("login").value;
@@ -9,7 +10,7 @@ signInForm.addEventListener('submit', (e) => {
         password
     };
     // console.log(JSON.stringify(data));
-    fetch('/api/login', {
+    fetch(`${webLink}/api/login`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {"Content-type": "application/json; charset=UTF-8"}

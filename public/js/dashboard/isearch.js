@@ -2,6 +2,8 @@ var userData = JSON.parse(localStorage.getItem("token"));
 var token = userData.accessToken;
 const searchForm = document.getElementById("iSearch-form");
 const searchGeo = document.getElementById("isearch-geolocation");
+const webLink = "https://i2talk-chat.herokuapp.com";
+
 
 searchForm.addEventListener("submit", function () {
     event.preventDefault();
@@ -14,7 +16,7 @@ searchForm.addEventListener("submit", function () {
         "kilometer" : 50000
     };
     timeOut = setTimeout(function() { 
-        fetch(`/api/isearch/location`, {
+        fetch(`${webLink}/api/isearch/location`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -117,7 +119,7 @@ function sortResults(position) {
         "kilometer" : 50000
     };
     timeOut = setTimeout(function() { 
-        fetch(`/api/isearch/geolocation`, {
+        fetch(`${webLink}/api/isearch/geolocation`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -185,7 +187,7 @@ function sortResults(position) {
 
 function newChat(username) {
     username = username.getAttribute("data-username");
-    let url = new URL(`/privatechat?username=${username}`);
+    let url = new URL(`${webLink}/privatechat?username=${username}`);
     window.location.assign(url)
     // setTimeout(function(){ window.location.assign(`PrivateChat.html`) }, 500);
 }
