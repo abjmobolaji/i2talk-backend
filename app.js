@@ -20,7 +20,7 @@ const cors = require("cors");
 global.__basedir = __dirname;
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "https://i2talk-chat.herokuapp.com/"
 };
 
 

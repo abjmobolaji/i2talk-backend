@@ -2,7 +2,7 @@ var userData = JSON.parse(localStorage.getItem("token"));
 var token = userData.accessToken;
 const searchForm = document.getElementById("iSearch-form");
 const searchGeo = document.getElementById("isearch-geolocation");
-const webLink = "https://i2talk-chat.herokuapp.com";
+// const webLink = "https://i2talk-chat.herokuapp.com";
 
 
 searchForm.addEventListener("submit", function () {

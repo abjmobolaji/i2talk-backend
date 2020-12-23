@@ -1,6 +1,6 @@
 var userData = JSON.parse(localStorage.getItem("token"))
 var token = userData.accessToken
-const webLink = "https://i2talk-chat.herokuapp.com";
+// const webLink = "https://i2talk-chat.herokuapp.com";
 
 function getChatRooms(token) {
   fetch(`${webLink}/api/chatrooms`, {

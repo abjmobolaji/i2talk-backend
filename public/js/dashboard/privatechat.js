@@ -9,7 +9,7 @@ var messageForm = document.getElementById("pmessageForm");
 var msgInput = document.getElementById("pmsg-input");
 const msgBtn = document.getElementById("pmsg-btn");
 var siofu = new SocketIOFileUpload(socket);
-const webLink = "https://i2talk-chat.herokuapp.com"
+// const webLink = "https://i2talk-chat.herokuapp.com"
  
 // const chatNo = document.getElementsByClassName("chat-counter")[0]
 // const chatImg = document.getElementsByClassName("chat-head-img")[0]

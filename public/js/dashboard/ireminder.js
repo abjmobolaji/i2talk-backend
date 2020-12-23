@@ -8,7 +8,7 @@ var token = userData.accessToken;
 var userID = userData.data.userID;
 var username = userData.data.username;
 var isender = titleCase(userData.data.username);
-const webLink = "https://i2talk-chat.herokuapp.com";
+// const webLink = "https://i2talk-chat.herokuapp.com";
 
 
 

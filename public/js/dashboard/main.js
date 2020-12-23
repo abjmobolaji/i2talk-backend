@@ -4,7 +4,7 @@ var isender = titleCase(userData.data.username);
 const chatNo = document.getElementsByClassName("chat-counter")[0]
 const chatImg = document.getElementsByClassName("chat-head-img")[0]
 const chatScreen = document.getElementById("chat-menu");
-const webLink = "https://i2talk-chat.herokuapp.com"
+// const webLink = "https://i2talk-chat.herokuapp.com"
 
 function titleCase(str) {
     const newTitle = str.split(" ");
