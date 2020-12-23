@@ -26,7 +26,7 @@ const getUsers = (req, res, next) => {
 // GET USERS BY ID
 const getUserByID = (req, res, next) => {
     if (!req.params.id) { return res.status(404).json({ message : "Error! No User ID supplied!"}) }
-    let sql = `SELECT * FROM USERS WHERE ID = ${req.params.id}`;
+    let sql = `SELECT * FROM users WHERE ID = ${req.params.id}`;
     connection.query(sql, (err, resp) => {
         if (err) { return res.status(422).json({message : err.sqlMessage}); }
         if (resp.length > 0) {
