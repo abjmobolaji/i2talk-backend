@@ -52,6 +52,28 @@ const contactValidationRules = () => {
   ]
 }
 
+const userRegValidationRules = () => {
+  return [
+    body('username').isLength({ min: 5 }).withMessage('Username must have more than 5 characters'),
+    body('fullName').isLength({ min: 6 }).withMessage('Full Name must have more than 6 characters'),
+    body('email').isEmail().normalizeEmail().withMessage('Invalid email address'),
+    body('password').isLength({ min: 8 }).withMessage('Password must be 8 chars+')
+                       .matches(/\d/).withMessage('must contain a number'),
+    body('countryCode').isLength({ min: 3 }).withMessage('Country Code Must Contain 3 digits')
+                       .matches(/\d/).withMessage('Country Code Must be a number'),
+    body('phone').isLength({ min: 10 }).withMessage('Phone number must be 10 digits'),
+    body('sex').not().isEmpty().withMessage('Sex is required'),
+    body('state').not().isEmpty().withMessage('State is required')
+  ]
+}
+
+const userLoginValidationRules = () => {
+  return [
+    body('login').not().isEmpty().withMessage('Login is required'),
+    body('password').not().isEmpty().withMessage('Password is required')
+  ]
+}
+
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
@@ -72,5 +94,7 @@ module.exports = {
   iSearchValidation1Rules,
   iSearchValidation2Rules,
   iSearchValidation3Rules,
+  userRegValidationRules,
+  userLoginValidationRules,
   validate
 }

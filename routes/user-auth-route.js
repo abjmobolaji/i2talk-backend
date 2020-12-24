@@ -1,19 +1,18 @@
 const express = require('express');
-const { check } = require('express-validator');
+const { userLoginValidationRules, userRegValidationRules, validate } = require('../models/validator');
 
 // Required Controllers
 const userAuthController = require('../controllers/user-auth-controller');
 const stateLocation = require('../middleware/state-location');
-const auth = require('../middleware/auth');
 const authyVerify = require('../middleware/authyVerify');
 
 const router = express.Router();
 
 // LOGIN
-router.post("/login", userAuthController.login)
+router.post("/login", userLoginValidationRules(), validate, userAuthController.login)
 
 // SIGN UP
-router.post("/signup", stateLocation.getlatlongFromState, userAuthController.signup);
+router.post("/signup", userRegValidationRules(), validate, stateLocation.getlatlongFromState, userAuthController.signup);
 // SELECT ACTIVATION TYPE
 router.post("/activation", userAuthController.activationType);
 

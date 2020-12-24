@@ -191,7 +191,7 @@ app.use((error, req, res, next) => {
     if (res.headerSent) {
         return next(error);
     }
-    res.status(error.code || 500)
+    res.status(error.code || 5000)
     res.json({message: error.message || 'An unknown error occurred!'});
 })
 
@@ -224,27 +224,18 @@ io.on('connection', socket => {
 
      // LIsten for chatMessage
      socket.on('chatMessage', msg => {
-        sql = `SELECT * from chat_rooms_members WHERE socketID = '${socket.id}'`
-        connection.query(sql, (err, response) => {
-            if (err) return err.sqlMessage
-                const currentUser = response[0];
-                chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
-                io.to(currentUser.roomName).emit('message', chatMessage.formatMessage(currentUser.username, msg));
-            });
-    })
+         joinRoom.getCurrentUser(socket.id, (currentUser) => {
+             chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
+             io.to(currentUser.roomName).emit('message', chatMessage.formatMessage(currentUser.username, msg));
+         });
+    });
 
     // typing indicator
     socket.on("typing", function (isTyping) {
-        console.log("typing");
-        sql = `SELECT * from chat_rooms_members WHERE socketID = '${socket.id}'`
-        connection.query(sql, (err, response) => {
-            if (err) return err.sqlMessage
-                const currentUser = response[0];
-                const cusername = currentUser.username
-                console.log(currentUser.roomName)
-                io.to(currentUser.roomName).emit("typing", { cusername, isTyping });
+        joinRoom.getCurrentUser(socket.id, (currentUser) => {
+            const cusername = currentUser.username
+            io.to(currentUser.roomName).emit("typing", { cusername, isTyping });
         });
-        
       });
 
     //   Private Chats
@@ -264,16 +255,12 @@ io.on('connection', socket => {
         privateChatMessage.addMessageToDb(chatID, isender, receiver, msg);
         privateChatMessage.addLastMessageToDb(chatID, msg);
         io.to(chatID).emit('messages', chatMessage.formatMessage(isender, msg));
-        const sql = `SELECT * FROM chats WHERE sender = '${isender}' OR receiver = '${isender}' ORDER BY updatedAt DESC`
-        connection.query(sql, (err, response) => {
+        privateChatMessage.updateChatMessageList(isender, (response) => {
             io.to(isender).emit('chatlist', response);
-            
-        }); 
-        const sql2 = `SELECT * FROM chats WHERE sender = '${receiver}' OR receiver = '${receiver}' ORDER BY updatedAt DESC`
-        connection.query(sql2, (err, response) => {
+        });
+        privateChatMessage.updateChatMessageList(receiver, (response) => {
             io.to(receiver).emit('chatlist', response);
-            
-        }); 
+        });
     });
 
     // Scheduled Message
@@ -282,7 +269,6 @@ io.on('connection', socket => {
         var newDate = getDate.toISOString();
         var date = moment(newDate).format('YYYY-MM-DD H:mm:ss');
         var cronDate = new Date(newDate);
-
         privateChatMessage.addScheduledMessageToDb(chatID, isender, receiver, date, message);
         const schedule = true;
         const username = isender;
@@ -306,14 +292,8 @@ io.on('connection', socket => {
         var cronDate = new Date(timeCompleted);
         console.log('Reminder started')
         var job = uuidv4(); 
-        var job = new CronJob(cronDate, function() {
-            // const sql = `SELECT * FROM chats WHERE sender = '${isender}' OR receiver = '${isender}' ORDER BY updatedAt DESC`
-            // connection.query(sql, (err, response) => {
-            //     io.to(isender).emit('chatlist', response)
-            // }); 
-            console.log(creator)
+        var job = new CronJob(cronDate, function() { 
             io.to(creator).emit('reminderNotification', { title, message })
-            
         });
         job.start();
     });
@@ -351,14 +331,11 @@ io.on('connection', socket => {
             const link = event.file.pathName.replace(/\\/g,"/");
             var fileName =link.substring(link.lastIndexOf('/')+1);
             const attachment = true;
-            sql = `SELECT * from chat_rooms_members WHERE socketID = '${socket.id}'`
-            connection.query(sql, (err, response) => {
-            if (err) return err.sqlMessage
-                const currentUser = response[0];
+            joinRoom.getCurrentUser(socket.id, (currentUser) => {
                 const username = currentUser.username;
                 chatMessage.addchatRoomAttachmentToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, link, fileName);
                 io.to(currentUser.roomName).emit('message', { attachment, link, username, fileName });
-            });      
+            })
         }
         
     });
@@ -371,11 +348,7 @@ io.on('connection', socket => {
   
      // Runs when client disconnects
     socket.on('disconnect', () => {
-        console.log(socket.id)
-        sql = `SELECT * from chat_rooms_members WHERE socketID = '${socket.id}'`
-        connection.query(sql, (err, response) => {
-            if (err) return err.sqlMessage
-            const currentUser = response[0];
+        joinRoom.getCurrentUser(socket.id, (currentUser) => {
             if (currentUser) {
                 
                 io.to(currentUser.roomName).emit(
@@ -383,21 +356,13 @@ io.on('connection', socket => {
                     chatMessage.formatMessage(botName, `${currentUser.username} has left the chat`)
                 );
             } 
-        })
-         joinRoom.userLeave(socket.id)
-        
-        // console.log(user);
-        // if (user) {
-        //     io.to(user.room).emit(
-        //         'message', 
-        //         formatMessage(botName, `${user.username} has left the chat`)
-        //     );
-
-        //     // io.to(user.room).emit('roomUsers', {
+            joinRoom.userLeave(socket.id);
+            //     // io.to(user.room).emit('roomUsers', {
         //     //     room: user.room,
         //     //     users: getRoomUsers(user.room)
         //     // });
         // }
+        })
     });
 });
 

@@ -11,14 +11,12 @@ function userJoinChatRoom (id, userID, chatRoomId, username, roomName) {
     return user;
 }
 
-// Get current USers
-function getCurrentUser(id) {
+// Get current Users
+function getCurrentUser(id, callback) {
     sql = `SELECT * from chat_rooms_members WHERE socketID = '${id}'`
     connection.query(sql, (err, response) => {
         if (err) return err.sqlMessage
-        console.log(response);
-        return response[0];
-        // console.log(response[0].username)
+        return callback(response[0]);
     })
 }
 

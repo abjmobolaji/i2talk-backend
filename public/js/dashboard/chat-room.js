@@ -169,7 +169,7 @@ function outputMessage(message) {
 }
 
 function getChatRooms(token, roomId) {
-  fetch(`https://i2talk-chat.herokuapp.com/api/chatrooms/messages/${roomId}`, {
+  fetch(`${webLink}/api/chatrooms/messages/${roomId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }

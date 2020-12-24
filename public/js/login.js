@@ -1,6 +1,7 @@
 var signInForm = document.getElementById('signin-form');
 var errorMessages = document.getElementById("error-login");
-const webLink = "https://i2talk.live"
+const webLink = "https://i2talk.live";
+// const webLink = "http://localhost:3000";
 
 signInForm.addEventListener('submit', (e) => {
     const login = document.getElementById("login").value;

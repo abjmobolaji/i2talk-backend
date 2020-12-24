@@ -46,9 +46,16 @@ const updateScheduledMessage = (date, receiver) => {
     const sql = `UPDATE chat_messages SET scheduled = '0' where timetodeliver  = '${date}' AND receiver = '${receiver}'`
     connection.query(sql, (err, response) => {
         if (err) throw err
-        console.log('message sent')
+        // console.log('message sent')
     });
     
+};
+
+const updateChatMessageList = (owner, callback) => {
+        const sql = `SELECT * FROM chats WHERE sender = '${owner}' OR receiver = '${owner}' ORDER BY updatedAt DESC`
+        connection.query(sql, (err, response) => {
+            return callback(response);
+        }); 
 };
 
 const addScheduledMessageToDb = (chatID, isender, receiver, date, message) => {
@@ -102,5 +109,6 @@ module.exports = {
     addLastMessageToDb,
     addScheduledMessageToDb,
     updateScheduledMessage,
-    addAttachmentMessageToDb
+    addAttachmentMessageToDb,
+    updateChatMessageList
 };

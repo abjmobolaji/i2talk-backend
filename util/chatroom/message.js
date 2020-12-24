@@ -11,6 +11,7 @@ function formatMessage(username, text) {
 }
 
 const addMessageToDb = (userID, username, chatRoomID, message) => {
+    console.log("working")
     const sql = `insert into chat_rooms_messages (userID, username, chatRoomID, message) values ('${userID}', '${username}', '${chatRoomID}', '${message}')`
     connection.query(sql, (err, response) => {
         if (err) throw err
