@@ -19,37 +19,40 @@ var token = userData.accessToken
 		input= document.getElementById("searchInput").value
 	
 		input=input.toLowerCase()//CONVERTS THE SEARCH INPUT TO LOWER CASE
-		db.collection("users").where("userName", "==", logged).get().then((querySnapshot) => {
-			querySnapshot.forEach((doc) => {
-				docId = doc.id
-				const {iDairy} = doc.data();
-			allMessagez = iDairy.filter(x=>x.message.toLowerCase().includes(input))
-			document.getElementById("records").style.display="block"
-			document.getElementById("back-btn").style.display="block"
-			document.getElementById("top").style.display="none"
-			document.getElementById("top-heading").style.display="none"
-		
-			if(allMessagez==null||allMessagez==undefined){
-				document.getElementById("records").innerHTML=`<b> No notes found</b>`
-			}
+		fetch(`${webLink}/api/idairy/search/${input}`, {
+			headers: {
+			  'Authorization': `Bearer ${token}`
+		  }
+		  }).then((response) => {
+			if (response.status == 200){
+			  response.json().then((data) => {
+				  var iDairy = data.data;
+				  console.log(iDairy);
+				  document.getElementById("records").style.display="block"
+				document.getElementById("back-btn").style.display="block"
+				document.getElementById("top").style.display="none"
+				document.getElementById("top-heading").style.display="none"
 			
-			else{
-				displaySearchedMessages()
-				
-				if(allMessagez.length==1){
-				document.getElementById("records").innerHTML=`<b> 1 note found</b>`
+				if(iDairy==null||iDairy==undefined){
+					document.getElementById("records").innerHTML=`<b> No notes found</b>`
 				}
 				else{
-				document.getElementById("records").innerHTML=`<b>${allMessagez.length} notes found</b>`
+					displaySearchedMessages(iDairy)
+					if(iDairy.length==1){
+					document.getElementById("records").innerHTML=`<b> 1 note found</b>`
+					}
+					else{
+					document.getElementById("records").innerHTML=`<b>${iDairy.length} notes found</b>`
+					}
 				}
-			}
-				
 			})
-			});
-	
+			} else {
+			  
+			}
+		  }).catch(function(error) {
+			console.log('Request failed', error)
+		});
 		//FILTERS FOR MESSAGES THAT INCLUDE THE SEARCH PARAMETER
-		
-		
 		}
 	
 	
@@ -204,25 +207,19 @@ var token = userData.accessToken
 		}
 	
 	
-		function displaySearchedMessages(){
+		function displaySearchedMessages(iDairy){
 		content=""
-		db.collection("users").where("userName", "==", logged).get().then((querySnapshot) => {
-			querySnapshot.forEach((doc) => {
-				docId = doc.id
-				const {iDairy} = doc.data();
-				var allMessagez = iDairy.filter(x=>x.message.toLowerCase().includes(input))
-				console.log(allMessagez)
-				y= allMessagez.length
-				content=""
-			})
-				for(var x=y-1; x>=0; x--){
+		for (i=0; i<= iDairy.length; i++) {
+			if(iDairy[i]!=null || iDairy[i]!=undefined )
+			{
 					content+=`<div id="messageContainer">
-						<sup>${ToTime(allMessagez[x].time)}</sup><br>
-						<p> ${allMessagez[x].message}</p><br>
+						<sup>${ToTime(iDairy[x].timeCreated)}</sup><br>
+						<p> ${iDairy[x].message}</p><br>
 						</div>`
-				}
+				
 				document.getElementById("messages").innerHTML= content
-		});
+			}	
+		  }
 		
 		}
 	

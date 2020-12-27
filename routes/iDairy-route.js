@@ -15,7 +15,9 @@ router.put('/edit/:id', auth.authenticateUser, iDairyControllers.editDairy);
 
 router.get('/', auth.authenticateUser, iDairyControllers.getAllDairy);
 
-router.get('/dairy/:id', auth.authenticateUser, iDairyControllers.getDairy);
+router.get('/:id', auth.authenticateUser, iDairyControllers.getDairy);
+
+router.get('/search/:id', auth.authenticateUser, iDairyControllers.searchDairy);
 
 router.delete('/delete/:id', auth.authenticateUser, iDairyControllers.deleteDairy);
 

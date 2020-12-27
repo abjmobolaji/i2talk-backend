@@ -36,6 +36,18 @@ const getAllDairy = (req, res, next) => {
     }); 
 };
 
+// Search Keyword Dairy
+const searchDairy = (req, res, next) => {
+    const { keyword } = req.body;
+    const userID = req.data.userID;
+    const sql = `select * from idiary where message LIKE '%?%' AND userID = ? ORDER BY timeCreated DESC`
+    connection.query(sql, [keyword, userID], (err, response) => {
+        if (err) return res.status(422).json({message : err.sqlMessage}) 
+        // else if (response.length === 0) return res.status(404).json({message : 'No dairy Found'})
+        res.status(200).json({data : response})
+    }); 
+};
+
 // get a dairy by id
 const getDairy = (req, res, next) => {
     const sql = `select * from idiary where id = ${req.params.id}`
@@ -64,3 +76,4 @@ exports.editDairy = editDairy;
 exports.getAllDairy = getAllDairy;
 exports.getDairy = getDairy;
 exports.deleteDairy= deleteDairy;
+exports.searchDairy = searchDairy;

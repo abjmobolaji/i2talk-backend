@@ -5,6 +5,7 @@ const { check } = require('express-validator');
 const userController = require('../controllers/users-controller');
 const stateLocation = require('../middleware/state-location');
 const auth = require('../middleware/auth');
+const fileUpload = require('../middleware/file-upload');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get("/", auth.authenticateUser, [auth.authorizeUser("view_users"), auth.c
 router.get("/:id", auth.authenticateUser, userController.getUserByID); 
 
 // EDIT USER PROFILE
-router.put("/editProfile/:id",  auth.authenticateUser, userController.editUserDetails);
+router.put("/editProfile",  auth.authenticateUser, fileUpload.single('profile-picture'), stateLocation.getlatlongFromState, userController.editUserDetails);
 
 // CHANGE USER PASSWORD
 router.post("/changePassword", auth.authenticateUser, userController.changePassword);

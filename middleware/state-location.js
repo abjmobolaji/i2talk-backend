@@ -1,5 +1,5 @@
 const getlatlongFromState = (req, res, next) => {
-    if (!req.body.state) { return res.status(404).json({message : 'Could not get state!'}); }
+    // if (!req.body.state) { return res.status(404).json({message : 'Could not get state!'}); }
     switch (req.body.state) {
       case "Abia":
         latlong = [5.532003041,7.486002487];
@@ -113,7 +113,7 @@ const getlatlongFromState = (req, res, next) => {
         latlong = [9.083333149,7.533328002];
         break;
       default:
-        latlong = [9.0820, 8.6753];
+        latlong = [];
     } 
     req.body.latitude = latlong[0];
     req.body.longitude = latlong[1];
