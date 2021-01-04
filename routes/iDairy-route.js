@@ -17,9 +17,8 @@ router.get('/', auth.authenticateUser, iDairyControllers.getAllDairy);
 
 router.get('/:id', auth.authenticateUser, iDairyControllers.getDairy);
 
-router.get('/search/:id', auth.authenticateUser, iDairyControllers.searchDairy);
+router.get('/search/:keyword', auth.authenticateUser, iDairyControllers.searchDairy);
 
 router.delete('/delete/:id', auth.authenticateUser, iDairyControllers.deleteDairy);
-
 
 module.exports = router;

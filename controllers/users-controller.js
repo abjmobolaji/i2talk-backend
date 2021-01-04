@@ -37,6 +37,7 @@ const getUserByID = (req, res, next) => {
     });
 }
 
+
 // EDIT USER DETAILS
 const editUserDetails = (req, res, next) => {
     const userID = req.data.userID;
@@ -79,15 +80,6 @@ const editUserDetails = (req, res, next) => {
             return res.status(404).json({ message : "Error! User details not found and cant be edited!"})
         }
     });
-    // let pic = req.file.path.replace(/\\/g,"/");
-    // const filePath = `${process.env.BASE_URL}/${pic}`
-    // let sql2 = `UPDATE users SET fullName = '${req.body.fullName}', state = '${req.body.state}', latitude = '${req.body.latitude}', longitude = '${req.body.longitude}', picture = '${filePath}', bio = '${req.body.bio}' 
-    //             WHERE ID = '${userID}'`;
-    // connection.query(sql2, (err2, resp2) => {
-    //     if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
-    //     if (resp2.affectedRows === 0) { return res.status(404).json({message : 'No User with the provided id'}) }
-    //     res.status(200).json({message : "User updated successfully"})
-    // });
 }
 
 // GET USER LATITUDE AND LONGITUDE

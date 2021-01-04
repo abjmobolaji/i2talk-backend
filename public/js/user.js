@@ -1,6 +1,7 @@
 var signupForm = document.getElementById('signUpForm');
 var errorMessage = document.getElementById("error-signup");
-const webLink = "https://i2talk-chat.herokuapp.com";
+const webLink = "https://i2talk.live";
+// const webLink = "http://localhost:3000";
 
 signupForm.addEventListener('submit', (e) => {
     var sex = document.getElementById('gender').value;
@@ -10,18 +11,28 @@ signupForm.addEventListener('submit', (e) => {
     var username = document.getElementById("userName").value;
     var fullName = document.getElementById('fullNames').value;
     var email = document.getElementById("mail").value
-    console.log(fullName);
+    // console.log(fullName);
+    // var data = {
+    //     fullName,
+    //     username,
+    //     password,
+    //     email,
+    //     phone,
+    //     sex,
+    //     state: userLocation
+    // };
     var data = {
-        fullName,
-        username,
-        password,
-        email,
-        phone,
-        sex,
-        state: userLocation
+      fullName: "TeamInfinity",
+      username: "Infinitytes0nt",
+      password: "Infinitytest01$n",
+      email: "rasheedadedamotemsntn@gmail.com",
+      countryCode : "234",
+      phone: "09060659719",
+      sex : "female",
+      state: "Oyo"
     };
     // console.log(JSON.stringify(data));
-    fetch(`${webLink}/api/users/signup`, {
+    fetch(`${webLink}/api/signup`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {"Content-type": "application/json; charset=UTF-8"}

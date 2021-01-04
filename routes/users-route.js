@@ -1,5 +1,4 @@
 const express = require('express');
-const { check } = require('express-validator');
 
 // Required Controllers
 const userController = require('../controllers/users-controller');
@@ -16,7 +15,7 @@ router.get("/", auth.authenticateUser, [auth.authorizeUser("view_users"), auth.c
 router.get("/:id", auth.authenticateUser, userController.getUserByID); 
 
 // EDIT USER PROFILE
-router.put("/editProfile",  auth.authenticateUser, fileUpload.single('profile-picture'), stateLocation.getlatlongFromState, userController.editUserDetails);
+router.put("/editProfile", auth.authenticateUser, fileUpload.single('profile-picture'), stateLocation.getlatlongFromState,  userController.editUserDetails);
 
 // CHANGE USER PASSWORD
 router.post("/changePassword", auth.authenticateUser, userController.changePassword);
