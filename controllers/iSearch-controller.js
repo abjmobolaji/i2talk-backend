@@ -24,7 +24,7 @@ const iSearchLocationName = async (req, res, next) => {
     const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${coordinates.lat}'*pi()/180)) * sin((latitude*pi()/180)) +
      cos(('${coordinates.lat}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${coordinates.lng}' - longitude)
       * pi()/180)))) * 180/pi()) * 60 * 1.1515 * 1.609344) 
-      as distance FROM users WHERE NOT username = '${username}' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
+      as distance FROM users WHERE NOT username = '${username}' AND isEnabled = '1' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : 'Something went wrong'}) 
         else if (response.length === 0) return res.status(404).json({message : 'No Nearby User Found'})
@@ -39,7 +39,7 @@ const iSearchGeoLocation = (req, res, next) => {
     const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${latitude}'*pi()/180)) * sin((latitude*pi()/180)) +
     cos(('${latitude}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${longitude}' - longitude)
      * pi()/180)))) * 180/pi()) * 60 * 1.1515 * 1.609344) 
-     as distance FROM users WHERE NOT username = '${username}' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
+     as distance FROM users WHERE NOT username = '${username}' AND isEnabled = '1' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
    connection.query(sql, (err, response) => {
        if (err) return res.status(422).json({message : 'Something went wrong'}) 
        else if (response.length === 0) return res.status(404).json({message : 'No Nearby User Found'})
