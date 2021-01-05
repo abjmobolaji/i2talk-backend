@@ -4,9 +4,9 @@ const getCoordsForAddress = require('../util/location');
 // iSearch by Username/ Phone number
 const iSearchUserName = (req, res, next) => {
     const { username_phone } = req.body;
-    const sql = `SELECT * FROM users WHERE username = '${username_phone}' OR phone = '${username_phone}'`
+    const sql = `SELECT * FROM users WHERE isEnabled = '1' AND (username = '${username_phone}' OR phone = '${username_phone}')`
     connection.query(sql, (err, response) => {
-        if (err) return res.status(422).json({message : 'Something went wrong'}) 
+        if (err) return res.status(422).json({message : 'Something went wrong', err: err.sqlMessage}) 
         else if (response.length === 0) return res.status(404).json({message : 'No User Found'})
         res.status(200).json({data : response})
     });

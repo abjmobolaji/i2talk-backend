@@ -43,7 +43,7 @@ const searchDairy = (req, res, next) => {
     const sql = `select * from idiary where message LIKE '%${keyword}%' AND userID = '${userID}' ORDER BY timeCreated DESC`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 
-        // else if (response.length === 0) return res.status(404).json({message : 'No dairy Found'})
+        else if (response.length === 0) return res.status(404).json({message : 'No dairy Found'})
         res.status(200).json({data : response})
     }); 
 };
