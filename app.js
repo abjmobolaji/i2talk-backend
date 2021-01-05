@@ -149,7 +149,7 @@ app.get('/chat-room', (req, res) => {
 })
 
 app.get('/isearch', (req, res) => {
-    res.render('isearch', {
+    res.render('iSearch', {
         'title': 'iSearch',
         layout: 'dashboard'
     });
