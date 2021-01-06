@@ -74,13 +74,14 @@ const activationType = (req, res, next) => {
                     <p>Welcome to <b>i2talk</b>, you are a click away from accessing your account. Click on the button below to activate your account.</p>
                     <center><a href="http://localhost:3000/activation/${secretCode}"><button style="padding: 12px; color: white; background: #000066; border: none; border-radius: 6px;">Activate My Account</button></a></center> 
                     <p>Or Copy the link below to your browser:<br/>
-                    <a href="http://localhost:3000/activation/${secretCode}">http://localhost:3000/api/auth/activation/${secretCode}}</a></p>
+                    <a href="http://localhost:3000/activation/${secretCode}">http://localhost:3000/activation/${secretCode}}</a></p>
                     <br/>Thanks.`, 
                     resp[0].email,
                     (err3, info) => {
                         if (err3) { return res.status(500).json({ message: 'Internal Error' }); }
                         res.status(201).json({message : 'Activation mail sent, check your mail and activate your account!'})
                 });
+                // ${process.env.BASE_URL}
             })            
         });
     } else if (type == "sms" || type == "call") {
