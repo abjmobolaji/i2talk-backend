@@ -117,7 +117,9 @@ const activationType = (req, res, next) => {
                         // It is preferable to store the whole user data
                         let verify = { verify: authyId }
                         let token = jwt.sign(verify, process.env.AUTHY_TOKEN_SECRET, {expiresIn: '1h'})
-                        res.header('x-verify-token', token).status(201).send('Verification code sent');
+                        // res.header('x-verify-token', token).status(201).send('Verification code sent');
+                        res.status(201).json({message : 'Verification code sent', token : token});
+
                     })
                 })
             })
@@ -291,7 +293,8 @@ const resetOptions = (req, res, next) => {
                         // It is preferable to store the whole user data
                         let verify = { verify: authyId }
                         let token = jwt.sign(verify, process.env.AUTHY_TOKEN_SECRET, {expiresIn: '1h'})
-                        res.header('x-verify-token', token).status(201).send('Reset code sent');
+                        // res.header('x-verify-token', token).status(201).send('Reset code sent');
+                        res.status(201).json({message : 'Reset code sent', token : token});
                     })
                 })
             })
