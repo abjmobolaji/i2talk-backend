@@ -12,20 +12,27 @@ const moment = require('moment');
 //     }
 // }
 
-const addMessageToDb = (chatID, isender, receiver, msg) => {
+const addMessageToDb = (chatID, isender, receiver, msg, callback) => {
     const sql = `insert into chat_messages (chatID, sender, receiver, message) values ('${chatID}', '${isender}', '${receiver}', '${msg}')`
-    connection.query(sql, (err, response) => {
-        if (err) throw err
-        
+    connection.query(sql, (error, results, fields) => {
+        if (error) throw error
+        return callback(results.insertId);
     });
-    
+};
+
+const sendChatMessage = (id, callback) => {
+    const sql = 'SELECT * FROM chat_messages WHERE ID = ?'
+    connection.query(sql, [id], (error, results, fields) => {
+        if (error) throw error
+        return callback(results[0]);
+    });
 };
 
 const addLastMessageToDb = (chatID, msg) => {
     const sql = `UPDATE chats SET lastMessage = '${msg}' where chatID  = '${chatID}'`
     connection.query(sql, (err, response) => {
         if (err) throw err
-
+        console.log("lastmsgtodb")
     });
     
 };
@@ -110,5 +117,6 @@ module.exports = {
     addScheduledMessageToDb,
     updateScheduledMessage,
     addAttachmentMessageToDb,
-    updateChatMessageList
+    updateChatMessageList,
+    sendChatMessage
 };

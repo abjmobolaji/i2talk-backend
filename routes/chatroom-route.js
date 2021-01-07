@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/', auth.authenticateUser, chatRoomsControllers.getAllChatRooms);
+router.get('/', chatRoomsControllers.getAllChatRooms);
 
 router.get('/:id', auth.authenticateUser, chatRoomsControllers.getChatRoom);
 

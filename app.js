@@ -202,7 +202,7 @@ io.on('connection', socket => {
   
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
-
+        console.log(socket.id)
         const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
         socket.join(user.roomName)
 
@@ -239,8 +239,8 @@ io.on('connection', socket => {
       });
 
     //   Private Chats
-      socket.on('privateChats', ({ chatID, isender, receiver }) => {
-        const user = privateChats.createChat( chatID, isender, receiver);
+      socket.on('privateChats', ({ isender, receiver }) => {
+        const user = privateChats.createChat(isender, receiver);
         socket.join(user.chatID)
     });
 
@@ -252,15 +252,24 @@ io.on('connection', socket => {
 
     // LIsten for chatMessage
     socket.on('privateChatMessage', ({chatID, isender, receiver, msg}) => {
-        privateChatMessage.addMessageToDb(chatID, isender, receiver, msg);
+        privateChatMessage.addMessageToDb(chatID, isender, receiver, msg, (id) => {
+            privateChatMessage.sendChatMessage(id, (response) => {
+                const pchatID = response.chatID;
+                const psender = response.sender;
+                const pmsg = response.message;
+                io.to(pchatID).emit('messages', chatMessage.formatMessage(psender, pmsg));
+            });
+        });
         privateChatMessage.addLastMessageToDb(chatID, msg);
-        io.to(chatID).emit('messages', chatMessage.formatMessage(isender, msg));
-        privateChatMessage.updateChatMessageList(isender, (response) => {
-            io.to(isender).emit('chatlist', response);
-        });
-        privateChatMessage.updateChatMessageList(receiver, (response) => {
-            io.to(receiver).emit('chatlist', response);
-        });
+        setTimeout(function() {  
+            privateChatMessage.updateChatMessageList(isender, (response) => {
+                io.to(isender).emit('chatlist', response);
+            });
+            privateChatMessage.updateChatMessageList(receiver, (response) => {
+                io.to(receiver).emit('chatlist', response);
+            });
+        }, 200);
+        
     });
 
     // Scheduled Message

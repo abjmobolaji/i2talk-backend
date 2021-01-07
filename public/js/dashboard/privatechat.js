@@ -45,7 +45,7 @@ function ChatScreenName(chatroomiid) {
 // const socket = io();
 socket.emit('chats', isender);
 const chatID = getPrivateChatID(isender, receiver); 
-socket.emit('privateChats', { chatID, isender, receiver });
+socket.emit('privateChats', { isender, receiver });
 var t = document.createTextNode(`${ChatScreenName(chatID)}`);     // Create a text node
 Chatheaders.appendChild(t);
 
