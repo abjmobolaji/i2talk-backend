@@ -220,7 +220,7 @@ io.on('connection', socket => {
         // Broadcast when a user connects
         socket.broadcast
         .to(user.roomName)
-        .emit('message', chatMessage.formatMessage(botName, `${user.username} has joined the chat room`))
+        .emit('message', chatMessage.formatMessage(botName, `${user.username} has joined the chat room`));
 
         // send users and room info
         // io.to(user.room).emit('roomUsers', {
