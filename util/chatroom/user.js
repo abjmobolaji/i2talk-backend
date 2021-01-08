@@ -4,7 +4,7 @@ const connection = require('../../models/db');
 function userJoinChatRoom (id, userID, chatRoomId, username, roomName) {
     const sql = `insert into chat_rooms_members (socketID, userID, chatRoomId, username, roomName) values ('${id}', '${userID}', '${chatRoomId}', '${username}', '${roomName}')`
     connection.query(sql, (err, response) => {
-        if (err) throw err
+        if (err) return err.sqlMessage
         
     });
     const user = { id, userID, chatRoomId, username, roomName };
