@@ -16,7 +16,7 @@ var siofu = new SocketIOFileUpload(socket);
 socket.emit('joinRoom', { username, userID, roomName, roomId });
 
 socket.on('message', message => {
-    console.log(message)
+    console.log(message);
 })
 
 
