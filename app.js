@@ -56,9 +56,7 @@ const server = http.createServer(app);
 const io = socketio(server, {
     cors: {
       origin: "http://localhost:3000",
-      methods: ["GET", "POST"],
-      allowedHeaders: ["my-custom-header"],
-      credentials: true
+      methods: ["GET", "POST"]
     }
 });
 app.use(express.static(publicDirectoryPath));

@@ -35,18 +35,38 @@ const iSearchLocationName = async (req, res, next) => {
 // iSearch by UserGeoLocation
 const iSearchGeoLocation = (req, res, next) => {
     const username = req.data.username;
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
     const { latitude, longitude, kilometer} = req.body;
     const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${latitude}'*pi()/180)) * sin((latitude*pi()/180)) +
     cos(('${latitude}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${longitude}' - longitude)
      * pi()/180)))) * 180/pi()) * 60 * 1.1515 * 1.609344) 
-     as distance FROM users WHERE NOT username = '${username}' AND isEnabled = '1' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
+     as distance FROM users WHERE NOT username = '${username}' HAVING distance <= '${kilometer}' ORDER BY distance ASC LIMIT ${offset}, ${limit}`
    connection.query(sql, (err, response) => {
        if (err) return res.status(422).json({message : 'Something went wrong'}) 
        else if (response.length === 0) return res.status(404).json({message : 'No Nearby User Found'})
-       res.status(200).json({data : response})
+       console.log(response.length)
+       const newResponse = {count: response.length, results : response}
+       const responses = getPagingData(newResponse, page, limit)
+       res.status(200).json(responses)zz
    });
 };
 
+const getPagination = (page, size) => {
+    const limit = size ? +size : 3;
+    const offset = page ? page * limit : 0;
+  console.log(limit, offset)
+    return { limit, offset };
+};
+
+  const getPagingData = (data, page, limit) => {
+    const { count: totalItems, results: result  } = data;
+    const currentPage = page ? +page : 0;
+    const totalPages = Math.ceil(totalItems / limit);
+  
+    return { totalItems, result, totalPages, currentPage };
+  };
+  
 module.exports = {
     iSearchUserName,
     iSearchLocationName,
