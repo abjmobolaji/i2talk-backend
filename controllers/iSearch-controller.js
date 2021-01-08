@@ -48,7 +48,7 @@ const iSearchGeoLocation = (req, res, next) => {
        console.log(response.length)
        const newResponse = {count: response.length, results : response}
        const responses = getPagingData(newResponse, page, limit)
-       res.status(200).json(responses)zz
+       res.status(200).json(responses)
    });
 };
 
