@@ -70,7 +70,7 @@ function submitFunction(i) {
 
     // clear message input
     msgInput.value = '';
-    msgInput.focus(); 
+    msgInput.focus() 
 }
 
 messageForm.addEventListener("submit", event => {
