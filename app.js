@@ -19,16 +19,16 @@ const cors = require("cors");
 
 global.__basedir = __dirname;
 
-var whitelist = ['https://i2talk-chat.herokuapp.com', 'https://i2talk.live', 'http://localhost:3000']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// var whitelist = ['https://i2talk-chat.herokuapp.com', 'https://i2talk.live', 'http://localhost:3000']
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
 
 // views path
@@ -53,6 +53,7 @@ const app = express();
 
 const server = http.createServer(app);
 // const io = socketio(server);
+app.use(cors());
 const io = socketio(server, {
     cors: {
       origin: "http://localhost:3000",
@@ -63,7 +64,6 @@ const io = socketio(server, {
 }); 
 app.use(express.static(publicDirectoryPath));
 app.use(SocketIOFileUpload.router);
-app.use(cors(corsOptions));
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 hbs.registerPartials(partialsPath);
