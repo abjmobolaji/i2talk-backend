@@ -60,7 +60,7 @@ const io = socketio(server, {
       allowedHeaders: ["my-custom-header"],
       credentials: true
     }
-});
+}); 
 app.use(express.static(publicDirectoryPath));
 app.use(SocketIOFileUpload.router);
 app.use(cors(corsOptions));
@@ -206,7 +206,7 @@ app.use((error, req, res, next) => {
 const botName = "i2tak Bot"
 io.on('connection', socket => {
     // Run when client connects
-   console.log("connected")
+  
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
         console.log(socket.id)
