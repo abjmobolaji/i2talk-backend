@@ -52,15 +52,15 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 const server = http.createServer(app);
-const io = socketio(server);
-// const io = socketio(server, {
-//     cors: {
-//       origin: "http://localhost:3000",
-//       methods: ["GET", "POST"],
-//       allowedHeaders: ["my-custom-header"],
-//       credentials: true
-//     }
-// }); 
+// const io = socketio(server);
+const io = socketio(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
+    }
+}); 
 app.use(express.static(publicDirectoryPath));
 app.use(SocketIOFileUpload.router);
 app.use(cors(corsOptions));
@@ -206,7 +206,7 @@ app.use((error, req, res, next) => {
 const botName = "i2tak Bot"
 io.on('connection', socket => {
     // Run when client connects
-  
+    console.log("connected")
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
         console.log(socket.id)
