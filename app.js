@@ -249,7 +249,7 @@ io.on('connection', socket => {
     //   Private Chats
       socket.on('privateChats', ({ isender, receiver }) => {
         const user = privateChats.createChat(isender, receiver);
-        socket.join(user.chatID)
+        socket.join(user.chatID);
     });
 
     
