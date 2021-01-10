@@ -20,7 +20,11 @@ const editDairy = (req, res, next) => {
         else if (response.length === 0) return res.status(404).json({message : 'Could not find a dairy with the provided id'})
         connection.query(`UPDATE idiary SET message = '${message}', userID = '${userID}' where id = ${req.params.id}`, (err, response) => {
             if (err) return res.status(422).json({message : err.sqlMessage})
-            res.status(200).json({message : 'Dairy edited successfully'})
+            const sql = `select * from idiary where id = ${req.params.id}`
+            connection.query(sql, (err, response) => {
+                if (err) return res.status(422).json({message : err.sqlMessage}) 
+                res.status(200).json({message : 'Dairy edited successfully', data : response})
+            }); 
         })
     }); 
 };

@@ -231,7 +231,7 @@ io.on('connection', socket => {
     
 
      // LIsten for chatMessage
-     socket.on('chatMessage', msg => {
+     socket.on('chatMessage', ({ msg, userID}) => {
          joinRoom.getCurrentUser(socket.id, (currentUser) => {
              chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
              io.to(currentUser.roomName).emit('message', chatMessage.formatMessage(currentUser.username, msg));
