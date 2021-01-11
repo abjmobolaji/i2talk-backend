@@ -37,8 +37,14 @@ const signup =  (req, res, next) => {
             bcrypt.hash(password, 10, (errHash, hash) => { 
                 if (errHash) { return res.status(422).json({message : err}); }
                 const otpToken = require('crypto').randomBytes(64).toString('hex');
-                let sql2 = `INSERT INTO users (fullName, username, password, email, countryCode, phone, sex, state, latitude, longitude, token) 
-                        VALUES ('${fullName}', '${username}', '${hash}', '${email}', '${countryCode}', '${phone}', '${sex}', '${state}', '${latitude}', '${longitude}', '${otpToken}')`;
+                if (sex === "male") {
+                    var pic =  `${process.env.BASE_URL}/files/users/male.jpg`
+                } else if (sex === "female") {
+                    var pic = `${process.env.BASE_URL}/files/users/female.png`
+                }
+                console.log(pic)
+                let sql2 = `INSERT INTO users (fullName, username, password, email, countryCode, phone, sex, state, latitude, longitude, picture, token) 
+                        VALUES ('${fullName}', '${username}', '${hash}', '${email}', '${countryCode}', '${phone}', '${sex}', '${state}', '${latitude}', '${longitude}', '${pic}', '${otpToken}')`;
                 connection.query(sql2, (err2, resp2) => {
                     if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
                     if (resp2) {    

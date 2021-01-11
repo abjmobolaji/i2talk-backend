@@ -1,10 +1,7 @@
 // Attachment download
-const download = (req, res) => {
+const downloadAttachment = (req, res) => {
     const filePath = req.params.path;
-    console.log(filePath)
-    const directoryPath =  __basedir + "/uploads/chatAttachments/"
-    console.log(directoryPath)
-  
+    const directoryPath =  __basedir + "/uploads/chatAttachments/"  
     res.download(directoryPath + filePath, (err) => {
       if (err) {
         res.status(500).send({
@@ -14,4 +11,20 @@ const download = (req, res) => {
     });
   };
 
-exports.download = download;
+  const userProfile = (req, res) => {
+    const filePath = req.params.path;
+    const directoryPath =  __basedir + "/uploads/images/"
+    res.sendFile(directoryPath + filePath, (err) => {
+      if (err) {
+        res.status(500).send({
+          message: "Could not load the image " + err,
+        });
+      }
+    });
+  };
+
+
+module.exports = {
+  downloadAttachment,
+  userProfile
+};

@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/:path', fileControllers.download);
+router.get('/attachment/:path', fileControllers.downloadAttachment);
+router.get('/users/:path', fileControllers.userProfile);
 
 module.exports = router;

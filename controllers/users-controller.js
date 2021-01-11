@@ -65,8 +65,10 @@ const editUserDetails = (req, res, next) => {
                 var filePath = resp1[0].picture;
             }
             if (req.file) {
-                var pic = req.file.path.replace(/\\/g,"/");
-                var filePath = `${process.env.BASE_URL}/${pic}`
+                // var pic = req.file.path.replace(/\\/g,"/");4
+                var pic = req.file.filename;
+                var filePath = `${process.env.BASE_URL}/files/users/${pic}`
+                console.log(filePath)
             }
             
             let sql2 = `UPDATE users SET fullName = '${req.body.fullName}', state = '${req.body.state}', latitude = '${req.body.latitude}', longitude = '${req.body.longitude}', picture = '${filePath}', bio = '${req.body.bio}' 

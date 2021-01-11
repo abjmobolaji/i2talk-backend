@@ -96,7 +96,7 @@ app.use('/api/ireminder', iReminderRoutes);
 app.use('/api/idairy', iDairyRoutes);
 app.use('/api/isearch', iSearchRoutes);
 app.use('/api/chats', chatRoutes);
-app.use('/attachment', fileRoutes);
+app.use('/files', fileRoutes);
 
 // view route
 app.get('/', (req, res) => {
