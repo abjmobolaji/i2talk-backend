@@ -207,10 +207,8 @@ app.use((error, req, res, next) => {
 const botName = "i2tak Bot"
 io.on('connection', socket => {
     // Run when client connects
-    console.log("connected")
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
-        console.log(socket.id)
         const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
         socket.join(user.roomName)
 
@@ -231,7 +229,7 @@ io.on('connection', socket => {
     
 
      // LIsten for chatMessage
-     socket.on('chatMessage', ({ msg, userID}) => {
+     socket.on('chatMessage', msg => {
          joinRoom.getCurrentUser(socket.id, (currentUser) => {
              chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
              io.to(currentUser.roomName).emit('message', chatMessage.formatMessage(currentUser.username, msg));
@@ -367,13 +365,15 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         joinRoom.getCurrentUser(socket.id, (currentUser) => {
             if (currentUser) {
-                
                 io.to(currentUser.roomName).emit(
                     'message', 
                     chatMessage.formatMessage(botName, `${currentUser.username} has left the chat`)
                 );
             } 
-            joinRoom.userLeave(socket.id);
+            setTimeout(function(){ 
+                joinRoom.userLeave(socket.id);
+             }, 5000);
+            
             //     // io.to(user.room).emit('roomUsers', {
         //     //     room: user.room,
         //     //     users: getRoomUsers(user.room)
