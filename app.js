@@ -214,14 +214,14 @@ io.on('connection', socket => {
     socket.join(roomName);
   
     const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
-    io.in(roomName).emit(USER_JOIN_CHAT_EVENT, user);
+    io.in(roomName).emit("USER_JOIN_CHAT_EVENT", user);
   
     // Listen for new messages
-    socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+    socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
       const message = { id: uuidv4(), roomName, ...data};
     //   chatMessage.addMessageToDb(roomName, data);
     //   chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
-      io.in(roomName).emit(NEW_CHAT_MESSAGE_EVENT, message);
+      io.in(roomName).emit(NEW_CHAT_MESSAGE_EVENT, message)
      
     });
   
