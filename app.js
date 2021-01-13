@@ -236,6 +236,11 @@ io.on('connection', socket => {
          });
     });
 
+    socket.on('chatMessages', ({ username, userID, roomName, roomId, msg }) => {
+            chatMessage.addMessageToDb(userID, username, roomId, msg);
+            io.to(roomName).emit('message', chatMessage.formatMessage(username, msg));
+   });
+
     // typing indicator
     socket.on("typing", function (isTyping) {
         joinRoom.getCurrentUser(socket.id, (currentUser) => {
