@@ -24,6 +24,12 @@ function ChatScreenName(chatroomiid) {
 }
 
 const socket = io();
+// const socket = io("https://i2talk.live", {
+//   withCredentials: true,
+//   extraHeaders: {
+//     "my-custom-header": "abcd"
+//   }
+// });
 socket.emit('chats', isender);
 
 socket.on('chatlist', response => {

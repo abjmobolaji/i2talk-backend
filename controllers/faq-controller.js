@@ -22,7 +22,7 @@ const editFaq = (req, res, next) => {
         else if (response.length === 0) return res.status(404).json({message : 'Could not find a faq with the provided id'})
         connection.query(`UPDATE faq SET question = '${question}', answer = '${answer}', updatedBy = '${updatedBy}' where id = ${req.params.id}`, (err, response) => {
             if (err) return res.status(422).json({message : err.sqlMessage})
-            res.status(200).json({message : 'Reminder edited successfully'})
+            res.status(200).json({message : 'Faq edited successfully'})
         })
     }); 
 };

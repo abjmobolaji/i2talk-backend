@@ -52,11 +52,19 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 const server = http.createServer(app);
-const io = socketio(server);
-
+// const io = socketio(server);
+app.use(cors(corsOptions));
+const io = socketio(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
+    }
+}); 
 app.use(express.static(publicDirectoryPath));
 app.use(SocketIOFileUpload.router);
-app.use(cors(corsOptions));
+
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 hbs.registerPartials(partialsPath);
@@ -199,10 +207,8 @@ app.use((error, req, res, next) => {
 const botName = "i2tak Bot"
 io.on('connection', socket => {
     // Run when client connects
-  
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
-
         const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
         socket.join(user.roomName)
 
@@ -239,9 +245,9 @@ io.on('connection', socket => {
       });
 
     //   Private Chats
-      socket.on('privateChats', ({ chatID, isender, receiver }) => {
-        const user = privateChats.createChat( chatID, isender, receiver);
-        socket.join(user.chatID)
+      socket.on('privateChats', ({ isender, receiver }) => {
+        const user = privateChats.createChat(isender, receiver);
+        socket.join(user.chatID);
     });
 
     
@@ -252,15 +258,24 @@ io.on('connection', socket => {
 
     // LIsten for chatMessage
     socket.on('privateChatMessage', ({chatID, isender, receiver, msg}) => {
-        privateChatMessage.addMessageToDb(chatID, isender, receiver, msg);
+        privateChatMessage.addMessageToDb(chatID, isender, receiver, msg, (id) => {
+            privateChatMessage.sendChatMessage(id, (response) => {
+                const pchatID = response.chatID;
+                const psender = response.sender;
+                const pmsg = response.message;
+                io.to(pchatID).emit('messages', chatMessage.formatMessage(psender, pmsg));
+            });
+        });
         privateChatMessage.addLastMessageToDb(chatID, msg);
-        io.to(chatID).emit('messages', chatMessage.formatMessage(isender, msg));
-        privateChatMessage.updateChatMessageList(isender, (response) => {
-            io.to(isender).emit('chatlist', response);
-        });
-        privateChatMessage.updateChatMessageList(receiver, (response) => {
-            io.to(receiver).emit('chatlist', response);
-        });
+        setTimeout(function() {  
+            privateChatMessage.updateChatMessageList(isender, (response) => {
+                io.to(isender).emit('chatlist', response);
+            });
+            privateChatMessage.updateChatMessageList(receiver, (response) => {
+                io.to(receiver).emit('chatlist', response);
+            });
+        }, 200);
+        
     });
 
     // Scheduled Message
@@ -350,13 +365,15 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         joinRoom.getCurrentUser(socket.id, (currentUser) => {
             if (currentUser) {
-                
                 io.to(currentUser.roomName).emit(
                     'message', 
                     chatMessage.formatMessage(botName, `${currentUser.username} has left the chat`)
                 );
             } 
-            joinRoom.userLeave(socket.id);
+            setTimeout(function(){ 
+                joinRoom.userLeave(socket.id);
+             }, 5000);
+            
             //     // io.to(user.room).emit('roomUsers', {
         //     //     room: user.room,
         //     //     users: getRoomUsers(user.room)

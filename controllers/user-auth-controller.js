@@ -86,9 +86,9 @@ const activationType = (req, res, next) => {
                     'User Registration Successful! Please, Activate Your Account!',
                     `Hi ${resp[0].fullName.split(" ")[0]}, <br/>
                     <p>Welcome to <b>i2talk</b>, you are a click away from accessing your account. Click on the button below to activate your account.</p>
-                    <center><a href="${process.env.BASE_URL}/api/auth/activation/${secretCode}"><button style="padding: 12px; color: white; background: #000066; border: none; border-radius: 6px;">Activate My Account</button></a></center> 
+                    <center><a href="http://localhost:3000/activation/${secretCode}"><button style="padding: 12px; color: white; background: #000066; border: none; border-radius: 6px;">Activate My Account</button></a></center> 
                     <p>Or Copy the link below to your browser:<br/>
-                    <a href="${process.env.BASE_URL}/api/auth/activation/${secretCode}">${process.env.BASE_URL}/api/auth/activation/${secretCode}}</a></p>
+                    <a href="http://localhost:3000/activation/${secretCode}">http://localhost:3000/activation/${secretCode}}</a></p>
                     <br/>Thanks.`, 
                     resp[0].email,
                     (err3, info) => {
@@ -101,6 +101,7 @@ const activationType = (req, res, next) => {
                         auditManager.logTrail(trail);
                         res.status(201).json({message : 'Activation mail sent, check your mail and activate your account!'})
                 });
+                // ${process.env.BASE_URL}
             })            
         });
     } else if (type == "sms" || type == "call") {
@@ -149,7 +150,9 @@ const activationType = (req, res, next) => {
                         // It is preferable to store the whole user data
                         let verify = { verify: authyId }
                         let token = jwt.sign(verify, process.env.AUTHY_TOKEN_SECRET, {expiresIn: '1h'})
-                        res.header('x-verify-token', token).status(201).send('Verification code sent');
+                        // res.header('x-verify-token', token).status(201).send('Verification code sent');
+                        res.status(201).json({message : 'Verification code sent', token : token});
+
                     })
                 })
             })
@@ -406,7 +409,8 @@ const resetOptions = (req, res, next) => {
                         // It is preferable to store the whole user data
                         let verify = { verify: authyId }
                         let token = jwt.sign(verify, process.env.AUTHY_TOKEN_SECRET, {expiresIn: '1h'})
-                        res.header('x-verify-token', token).status(201).send('Reset code sent');
+                        // res.header('x-verify-token', token).status(201).send('Reset code sent');
+                        res.status(201).json({message : 'Reset code sent', token : token});
                     })
                 })
             })

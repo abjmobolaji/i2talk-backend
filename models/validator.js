@@ -25,14 +25,14 @@ const iSearchValidation2Rules = () => {
   return [ 
     body('location').not().isEmpty().withMessage('cannot be empty')
     .isLength({ min: 3 }).withMessage('Location name must have more than 3 characters'),
-    body('kilometer').not().isEmpty().withMessage('cannot be empty')
+    body('kilometer').optional({nullable: true, checkFalsy: true})
                      .matches(/\d/).withMessage('must contain a number'),
   ]
 }
 
 const iSearchValidation3Rules = () => {
   return [ 
-    body('kilometer').not().isEmpty().withMessage('cannot be empty')
+    body('kilometer').optional({nullable: true, checkFalsy: true})
                      .matches(/\d/).withMessage('must contain a number'),
     body('latitude').not().isEmpty().withMessage('cannot be empty')
                      .matches(/\d/).withMessage('must contain a number'),

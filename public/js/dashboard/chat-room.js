@@ -16,11 +16,8 @@ var siofu = new SocketIOFileUpload(socket);
 socket.emit('joinRoom', { username, userID, roomName, roomId });
 
 socket.on('message', message => {
-    console.log(message)
-    outputMessage(message)
-
-    // scroll down
-    // chatMessages.scrollTop = chatMessages.scrollHeight;
+    console.log(message);
+    outputMessage(message);
 })
 
 
@@ -74,7 +71,7 @@ function submitFunction(i) {
 
     // clear message input
     msgInput.value = '';
-    msgInput.focus(); 
+    msgInput.focus() 
 }
 
 messageForm.addEventListener("submit", event => {
