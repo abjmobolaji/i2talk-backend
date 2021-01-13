@@ -221,7 +221,7 @@ io.on('connection', socket => {
       const message = { id: uuidv4(), roomName, ...data};
     //   chatMessage.addMessageToDb(roomName, data);
     //   chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
-      io.in(roomName).emit(NEW_CHAT_MESSAGE_EVENT, message)
+      io.in(roomName).emit("NEW_CHAT_MESSAGE_EVENT", message)
      
     });
   
