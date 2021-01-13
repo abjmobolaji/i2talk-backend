@@ -239,7 +239,7 @@ io.on('connection', socket => {
     socket.on('chatMessages', ({ username, userID, roomName, roomId, msg }) => {
             console.log("working");
             chatMessage.addMessageToDb(userID, username, roomId, msg);
-            io.to(roomName).emit('message', chatMessage.formatMessage(username, msg));
+            io.to(roomName).emit('message', { userID, username, roomId, msg});
     });
 
     // typing indicator
