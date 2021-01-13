@@ -11,7 +11,7 @@ const downloadAttachment = (req, res) => {
     });
   };
 
-  const userProfile = (req, res) => {
+const userProfile = (req, res) => {
     const filePath = req.params.path;
     const directoryPath =  __basedir + "/uploads/images/"
     res.sendFile(directoryPath + filePath, (err) => {
