@@ -206,6 +206,25 @@ app.use((error, req, res, next) => {
 // Socket io
 const botName = "i2tak Bot"
 io.on('connection', socket => {
+
+    console.log(`${socket.id} connected`);
+
+    // Join a conversation
+    const { username, userID, roomName, roomId } = socket.handshake.query;
+    socket.join(roomName);
+  
+    const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
+    io.in(roomName).emit(USER_JOIN_CHAT_EVENT, user);
+  
+    // Listen for new messages
+    socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+      const message = { id: uuidv4(), roomName, ...data};
+    //   chatMessage.addMessageToDb(roomName, data);
+    //   chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
+      io.in(roomName).emit(NEW_CHAT_MESSAGE_EVENT, message);
+     
+    });
+  
     // Run when client connects
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
@@ -237,9 +256,8 @@ io.on('connection', socket => {
     });
 
     socket.on('chatMessages', ({ username, userID, roomName, roomId, msg }) => {
-            console.log("working");
             chatMessage.addMessageToDb(userID, username, roomId, msg);
-            io.to(roomName).emit('message', { userID, username, roomId, msg});
+            io.to(roomName).emit('message', { userID, username, roomId, msg });
     });
 
     // typing indicator
@@ -248,7 +266,7 @@ io.on('connection', socket => {
             const cusername = currentUser.username
             io.to(currentUser.roomName).emit("typing", { cusername, isTyping });
         });
-      });
+    });
 
     //   Private Chats
       socket.on('privateChats', ({ isender, receiver }) => {
