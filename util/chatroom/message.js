@@ -10,11 +10,19 @@ function formatMessage(username, text) {
     }
 }
 
-const addMessageToDb = (userID, username, chatRoomID, message) => {
+const addMessageToDb = (userID, username, chatRoomID, message, callback) => {
     const sql = `insert into chat_rooms_messages (userID, username, chatRoomID, message) values ('${userID}', '${username}', '${chatRoomID}', '${message}')`
-    connection.query(sql, (err, response) => {
-        if (err) return err.sqlMessage
-        
+    connection.query(sql, (error, results, fields) => {
+        if (error) throw error
+        return callback(results.insertId);
+    });
+};
+
+const sendChatMessage = (id, callback) => {
+    const sql = 'SELECT * FROM chat_rooms_messages WHERE ID = ?'
+    connection.query(sql, [id], (error, results, fields) => {
+        if (error) throw error
+        return callback(results[0]);
     });
 };
 
@@ -44,5 +52,6 @@ const addchatRoomAttachmentToDb = (userID, username, chatRoomID, link, fileName)
 module.exports = {
     formatMessage,
     addMessageToDb,
-    addchatRoomAttachmentToDb
+    addchatRoomAttachmentToDb,
+    sendChatMessage
 };

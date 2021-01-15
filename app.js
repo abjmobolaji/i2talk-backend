@@ -48,7 +48,7 @@ const chatRoutes= require('./routes/chat-route');
 const iDairyRoutes = require('./routes/iDairy-route');
 const fileRoutes = require('./routes/file-route');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const app = express();
 
 const server = http.createServer(app);
@@ -203,8 +203,54 @@ app.use((error, req, res, next) => {
     res.json({message: error.message || 'An unknown error occurred!'});
 })
 
+const chat = io.of('/chats')
+chat.on("connection", (socket) => {
+  console.log(`${socket.id} connected`);
+
+  // Join a conversation
+  const { isender, receiver, chatID } = socket.handshake.query;
+  const user = privateChats.createChat(isender, receiver);
+  socket.join(user.chatID);
+
+//   chat.in(user.chatID).emit(USER_JOIN_CHAT_EVENT, user);
+
+  // Listen for new messages
+  socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
+    const message = { ...data };
+    privateChatMessage.addMessageToDb(message.chatID, message.user.isender, message.user.receiver, message, (id) => {
+        privateChatMessage.sendChatMessage(id, (response) => {
+            chat.in(message.chatID).emit("NEW_CHAT_MESSAGE_EVENT", response);
+        });
+    });
+    privateChatMessage.addLastMessageToDb(chatID, msg);
+    setTimeout(function() {  
+        privateChatMessage.updateChatMessageList(message.user.isender, (response) => {
+            // chat.in(message.user.isender).emit('chatlist', response);
+        });
+        privateChatMessage.updateChatMessageList(message.user.receiver, (response) => {
+            // chat.in(message.user.receiver).emit('chatlist', response);
+        });
+    }, 200);
+  });
+
+        // Listen typing events
+    socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
+        chat.in(chatID).emit("START_TYPING_MESSAGE_EVENT", data);
+    });
+    socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
+        chat.in(chatID).emit("STOP_TYPING_MESSAGE_EVENT", data);
+    });
+
+  // Leave the room if the user closes the socket
+  socket.on("disconnect", () => {
+    socket.leave(chatID);
+  });
+});
+
+
 // Socket io
-const botName = "i2tak Bot"
+const botName = "i2tak Bot";
+
 io.on('connection', socket => {
 
     console.log(`${socket.id} connected`);
@@ -218,13 +264,24 @@ io.on('connection', socket => {
   
     // Listen for new messages
     socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
-      const message = { id: uuidv4(), roomName, ...data};
-    //   chatMessage.addMessageToDb(roomName, data);
-    //   chatMessage.addMessageToDb(currentUser.userID, currentUser.username, currentUser.chatRoomId, msg);
-      io.in(roomName).emit("NEW_CHAT_MESSAGE_EVENT", message)
-     
+        const message = { roomName, ...data };
+        console.log(message)
+        chatMessage.addMessageToDb(message.user.userId, message.user.username, message.chatRoomId, message.message, (id) => {
+            chatMessage.sendChatMessage(id, (response) => {
+                io.in(roomName).emit("NEW_CHAT_MESSAGE_EVENT", response)
+            });
+        });
+    });
+
+    // Listen typing events
+    socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
+        chat.in(roomId).emit("START_TYPING_MESSAGE_EVENT", data);
+    });
+    socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
+        chat.in(roomId).emit("STOP_TYPING_MESSAGE_EVENT", data);
     });
   
+// ----------------------------------------------------------------------------------------------------------------------//
     // Run when client connects
     socket.on('joinRoom', ({ username, userID, roomName, roomId }) => {
         // console.log(socket.rooms);
@@ -239,11 +296,6 @@ io.on('connection', socket => {
         .to(user.roomName)
         .emit('message', chatMessage.formatMessage(botName, `${user.username} has joined the chat room`))
 
-        // send users and room info
-        // io.to(user.room).emit('roomUsers', {
-        //     room: user.room,
-        //     users: getRoomUsers(user.room)
-        // })
     });
     
 
@@ -255,10 +307,6 @@ io.on('connection', socket => {
          });
     });
 
-    socket.on('chatMessages', ({ username, userID, roomName, roomId, msg }) => {
-            chatMessage.addMessageToDb(userID, username, roomId, msg);
-            io.to(roomName).emit('message', { userID, username, roomId, msg });
-    });
 
     // typing indicator
     socket.on("typing", function (isTyping) {
@@ -397,12 +445,6 @@ io.on('connection', socket => {
             setTimeout(function(){ 
                 joinRoom.userLeave(socket.id);
              }, 5000);
-            
-            //     // io.to(user.room).emit('roomUsers', {
-        //     //     room: user.room,
-        //     //     users: getRoomUsers(user.room)
-        //     // });
-        // }
         })
     });
 });

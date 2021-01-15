@@ -37,6 +37,21 @@ const getUserByID = (req, res, next) => {
     });
 }
 
+// GET USERS BY Username
+const getUserByUsername = (req, res, next) => {
+    if (!req.params.username) { return res.status(404).json({ message : "Error! No USERNAME supplied!"}) }
+    let sql = `SELECT * FROM users WHERE username = '${req.params.username}'`;
+    connection.query(sql, (err, resp) => {
+        if (err) { return res.status(422).json({message : err.sqlMessage}); }
+        if (resp.length > 0) {
+            delete resp[0].password;
+            res.send(resp[0]);
+        } else {
+            res.status(404).send("No User Record Found!");
+        }
+    });
+}
+
 
 // EDIT USER DETAILS
 const editUserDetails = (req, res, next) => {
@@ -151,6 +166,7 @@ module.exports.getUserByID = getUserByID;
 module.exports.getUsernameByID = getUsernameByID;
 module.exports.editUserDetails =  editUserDetails;
 module.exports.changePassword = changePassword;
+module.exports.getUserByUsername = getUserByUsername
 
 // MEANT FOR ISEARCH - WILL MOVE IT LATER
 module.exports.getlatlongByID = getlatlongByID;

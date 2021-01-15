@@ -14,6 +14,9 @@ router.get("/", auth.authenticateUser, [auth.authorizeUser("view_users"), auth.c
 // GET USERS BY ID
 router.get("/:id", auth.authenticateUser, userController.getUserByID); 
 
+// GET USERS BY ID
+router.get("/username/:username", auth.authenticateUser, userController.getUserByUsername); 
+
 // EDIT USER PROFILE
 router.put("/editProfile", auth.authenticateUser, fileUpload.single('profile-picture'), stateLocation.getlatlongFromState,  userController.editUserDetails);
 
