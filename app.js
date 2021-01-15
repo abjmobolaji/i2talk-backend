@@ -209,7 +209,7 @@ chat.on("connection", (socket) => {
 
   // Join a conversation
   const { isender, receiver, chatID } = socket.handshake.query;
-  console.log(chatID)
+  console.log(chatID, isender, receiver);
   privateChats.createChat(isender, receiver);
   socket.join(chatID);
 
