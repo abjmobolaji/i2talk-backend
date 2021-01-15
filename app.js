@@ -208,9 +208,10 @@ chat.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
 
   // Join a conversation
-//   const { isender, receiver, chatID } = socket.handshake.query;
+  const { isender, receiver, chatID } = socket.handshake.query;
+  console.log(chatID, isender, receiver);
 socket.on("NEW_CHAT_EVENT", ({ isender, chatID, receiver}) => {
-console.log(chatID, isender, receiver);
+console.log(chatID, isender, receiver, "working");
   privateChats.createChat(isender, receiver);
   socket.join(chatID);
 });
@@ -246,7 +247,7 @@ console.log(chatID, isender, receiver);
 
   // Leave the room if the user closes the socket
   socket.on("disconnect", () => {
-    socket.leave(chatID);
+    // socket.leave(chatID);
   });
 });
 
