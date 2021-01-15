@@ -209,20 +209,21 @@ chat.on("connection", (socket) => {
 
   // Join a conversation
   const { isender, receiver, chatID } = socket.handshake.query;
-  const user = privateChats.createChat(isender, receiver);
-  socket.join(user.chatID);
+  console.log(chatID)
+  privateChats.createChat(isender, receiver);
+  socket.join(chatID);
 
 //   chat.in(user.chatID).emit(USER_JOIN_CHAT_EVENT, user);
 
   // Listen for new messages
   socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
     const message = { ...data };
-    privateChatMessage.addMessageToDb(message.chatID, message.user.isender, message.user.receiver, message, (id) => {
+    privateChatMessage.addMessageToDb(message.chatID, message.user.isender, message.user.receiver, message.message, (id) => {
         privateChatMessage.sendChatMessage(id, (response) => {
             chat.in(message.chatID).emit("NEW_CHAT_MESSAGE_EVENT", response);
         });
     });
-    privateChatMessage.addLastMessageToDb(chatID, msg);
+    privateChatMessage.addLastMessageToDb(chatID, message.message);
     setTimeout(function() {  
         privateChatMessage.updateChatMessageList(message.user.isender, (response) => {
             // chat.in(message.user.isender).emit('chatlist', response);
