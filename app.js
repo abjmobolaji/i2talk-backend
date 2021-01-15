@@ -208,16 +208,14 @@ chat.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
 
   // Join a conversation
-  const { isender, receiver, chatID } = socket.handshake.query;
-  console.log(chatID, isender, receiver);
+//   const { isender, receiver, chatID } = socket.handshake.query;
+//   console.log(chatID, isender, receiver);
 socket.on("NEW_CHAT_EVENT", ({ isender, chatID, receiver}) => {
 console.log(chatID, isender, receiver, "working");
   privateChats.createChat(isender, receiver);
   socket.join(chatID);
 });
-  
 //   chat.in(user.chatID).emit(USER_JOIN_CHAT_EVENT, user);
-
   // Listen for new messages
   socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
     const message = { ...data };
@@ -279,10 +277,10 @@ io.on('connection', socket => {
 
     // Listen typing events
     socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(roomId).emit("START_TYPING_MESSAGE_EVENT", data);
+        chat.in(roomName).emit("START_TYPING_MESSAGE_EVENT", data);
     });
     socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(roomId).emit("STOP_TYPING_MESSAGE_EVENT", data);
+        chat.in(roomName).emit("STOP_TYPING_MESSAGE_EVENT", data);
     });
   
 // ----------------------------------------------------------------------------------------------------------------------//
