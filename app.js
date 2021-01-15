@@ -208,11 +208,13 @@ chat.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
 
   // Join a conversation
-  const { isender, receiver, chatID } = socket.handshake.query;
-  console.log(chatID, isender, receiver);
+//   const { isender, receiver, chatID } = socket.handshake.query;
+socket.on("NEW_CHAT_EVENT", ({ isender, chatID, receiver}) => {
+console.log(chatID, isender, receiver);
   privateChats.createChat(isender, receiver);
   socket.join(chatID);
-
+});
+  
 //   chat.in(user.chatID).emit(USER_JOIN_CHAT_EVENT, user);
 
   // Listen for new messages
@@ -223,7 +225,7 @@ chat.on("connection", (socket) => {
             chat.in(message.chatID).emit("NEW_CHAT_MESSAGE_EVENT", response);
         });
     });
-    privateChatMessage.addLastMessageToDb(chatID, message.message);
+    privateChatMessage.addLastMessageToDb(message.chatID, message.message);
     setTimeout(function() {  
         privateChatMessage.updateChatMessageList(message.user.isender, (response) => {
             // chat.in(message.user.isender).emit('chatlist', response);
@@ -234,13 +236,13 @@ chat.on("connection", (socket) => {
     }, 200);
   });
 
-        // Listen typing events
-    socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(chatID).emit("START_TYPING_MESSAGE_EVENT", data);
-    });
-    socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(chatID).emit("STOP_TYPING_MESSAGE_EVENT", data);
-    });
+    //     // Listen typing events
+    // socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
+    //     chat.in(chatID).emit("START_TYPING_MESSAGE_EVENT", data);
+    // });
+    // socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
+    //     chat.in(chatID).emit("STOP_TYPING_MESSAGE_EVENT", data);
+    // });
 
   // Leave the room if the user closes the socket
   socket.on("disconnect", () => {
