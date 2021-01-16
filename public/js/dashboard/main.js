@@ -43,7 +43,7 @@ socket.on('chatlist', response => {
 function outputChats(response) {
   console.log(response)
   chatScreen.innerHTML = "";
-  
+  z
         var chatMessages = response;
         var s = document.createTextNode(`${chatMessages.length}`); 
       chatNo.innerHTML=""    // Create a text node

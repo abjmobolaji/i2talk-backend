@@ -245,7 +245,7 @@ console.log(chatID, isender, receiver, "working");
 
     socket.on('NEW_SCHEDULE_MESSAGE_EVENT', (data) => {
         const message = { ...data };
-        console.log("working")
+        console.log("working");
         console.log(message)
         var getDate = moment(message.dateTime, "DD-MM-YYYY HH:mm:ss");
         var newDate = getDate.toISOString();
@@ -265,7 +265,7 @@ console.log(chatID, isender, receiver, "working");
             //     io.to(isender).emit('chatlist', response)
             // }); 
         });
-        job.start()
+        job.start();
     });
 
   // Leave the room if the user closes the socket

@@ -2,7 +2,7 @@ var userData = JSON.parse(localStorage.getItem("token"))
 var userID = userData.data.userID 
 var token = userData.accessToken
 const webLink = "https://i2talk.live";
-// const webLink = "http://localhost:3000";
+// const webLink = "http://localhost:4000";
 
 function getUserDetails(token, id) {
   fetch(`${webLink}/api/users/${id}`, {
