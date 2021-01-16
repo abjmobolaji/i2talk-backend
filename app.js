@@ -243,6 +243,29 @@ console.log(chatID, isender, receiver, "working");
     //     chat.in(chatID).emit("STOP_TYPING_MESSAGE_EVENT", data);
     // });
 
+    socket.on('NEW_SCHEDULE_MESSAGE_EVENT', (data) => {
+        const message = { ...data };
+        var getDate = moment(message.dateTime, "DD-MM-YYYY HH:mm:ss");
+        var newDate = getDate.toISOString();
+        var date = moment(newDate).format('YYYY-MM-DD H:mm:ss');
+        var cronDate = new Date(newDate);
+        privateChatMessage.addScheduledMessageToDb(message.chatID, message.user.isender, message.user.receiver, message.message, date );
+        var job = uuidv4(); 
+        var job = new CronJob(cronDate, function() {
+            privateChatMessage.updateScheduledMessage(date, message.user.receiver , (id) => {
+                privateChatMessage.sendChatMessage(id, (response) => {
+                    chat.in(message.chatID).emit("NEW_CHAT_MESSAGE_EVENT", response);
+            })});
+            privateChatMessage.addLastMessageToDb(message.chatID, message.message);
+            // socket.to(chatID).emit('messages', chatMessage.formatMessage(isender, message));
+            // const sql = `SELECT * FROM chats WHERE sender = '${isender}' OR receiver = '${isender}' ORDER BY updatedAt DESC`
+            // connection.query(sql, (err, response) => {
+            //     io.to(isender).emit('chatlist', response)
+            // }); 
+        });
+        job.start();
+    });
+
   // Leave the room if the user closes the socket
   socket.on("disconnect", () => {
     // socket.leave(chatID);

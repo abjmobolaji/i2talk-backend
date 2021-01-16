@@ -49,11 +49,11 @@ const addAttachmentMessageToDb = (chatID, isender, receiver, link, fileName) => 
     
 };
 
-const updateScheduledMessage = (date, receiver) => {
+const updateScheduledMessage = (date, receiver, callback) => {
     const sql = `UPDATE chat_messages SET scheduled = '0' where timetodeliver  = '${date}' AND receiver = '${receiver}'`
-    connection.query(sql, (err, response) => {
-        if (err) throw err
-        // console.log('message sent')
+    connection.query(sql, (error, results, fields) => {
+        if (error) throw error
+        return callback(results.insertId);
     });
     
 };
