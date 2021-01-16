@@ -265,7 +265,7 @@ console.log(chatID, isender, receiver, "working");
             //     io.to(isender).emit('chatlist', response)
             // }); 
         });
-        job.start();
+        job.start()
     });
 
   // Leave the room if the user closes the socket
