@@ -251,7 +251,7 @@ console.log(chatID, isender, receiver, "working");
         var newDate = getDate.toISOString();
         var date = moment(newDate).format('YYYY-MM-DD H:mm:ss');
         var cronDate = new Date(newDate);
-        privateChatMessage.addScheduledMessageToDb(message.chatID, message.user.isender, message.user.receiver, message.message, date );
+        privateChatMessage.addScheduledMessageToDb(message.chatID, message.user.isender, message.user.receiver, date, message.message );
         var job = uuidv4(); 
         var job = new CronJob(cronDate, function() {
             privateChatMessage.updateScheduledMessage(date, message.user.receiver , (id) => {
