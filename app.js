@@ -230,10 +230,10 @@ console.log(chatID, isender, receiver, "working");
     privateChatMessage.addLastMessageToDb(message.chatID, message.message);
     setTimeout(function() {  
         privateChatMessage.updateChatMessageList(message.user.isender, (response) => {
-            // chat.in(message.user.isender).emit('chatlist', response);
+            chat.in(message.user.isender).emit('chatlist', response);
         });
         privateChatMessage.updateChatMessageList(message.user.receiver, (response) => {
-            // chat.in(message.user.receiver).emit('chatlist', response);
+            chat.in(message.user.receiver).emit('chatlist', response);
         });
     }, 200);
   });
