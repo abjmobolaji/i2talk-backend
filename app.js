@@ -206,7 +206,10 @@ app.use((error, req, res, next) => {
 const chat = io.of('/chats')
 chat.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
-
+  socket.on('chats', (isender) => {
+    console.log("Joined")
+    socket.join(isender)
+});
   // Join a conversation
 //   const { isender, receiver, chatID } = socket.handshake.query;
 //   console.log(chatID, isender, receiver);
@@ -413,9 +416,6 @@ io.on('connection', socket => {
         job.start();
     });
 
-    socket.on('chats', (isender) => {
-        socket.join(isender)
-    });
 
     var uploader = new SocketIOFileUpload();
     uploader.dir = "./uploads/chatAttachments";
