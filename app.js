@@ -208,6 +208,7 @@ chat.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
   socket.on('chats', (isender) => {
     console.log("Joined")
+    console.log(isender)
     socket.join(isender)
 });
   // Join a conversation
@@ -230,12 +231,14 @@ console.log(chatID, isender, receiver, "working");
     privateChatMessage.addLastMessageToDb(message.chatID, message.message);
     setTimeout(function() {  
         privateChatMessage.updateChatMessageList(message.user.isender, (response) => {
-            chat.in(message.user.isender).emit('chatlist', response);
+            console.log(message.user.isender)
+            chat.to(message.user.isender).emit('chatlist', response);
         });
         privateChatMessage.updateChatMessageList(message.user.receiver, (response) => {
-            chat.in(message.user.receiver).emit('chatlist', response);
+            console.log(message.user.receiver)
+            chat.to(message.user.receiver).emit('chatlist', response);
         });
-    }, 200);
+    }, 400);
   });
 
     //     // Listen typing events
