@@ -48,7 +48,7 @@ const chatRoutes= require('./routes/chat-route');
 const iDairyRoutes = require('./routes/iDairy-route');
 const fileRoutes = require('./routes/file-route');
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const server = http.createServer(app);
@@ -379,6 +379,7 @@ io.on('connection', socket => {
 
     // Scheduled Message
     socket.on('scheduledChatMessage', ({ chatID, isender, receiver, dateTime, message}) => {
+        console.log(dateTime)
         var getDate = moment(dateTime, "DD-MM-YYYY HH:mm:ss");
         var newDate = getDate.toISOString();
         var date = moment(newDate).format('YYYY-MM-DD H:mm:ss');
