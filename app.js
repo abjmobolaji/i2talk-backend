@@ -308,10 +308,13 @@ io.on('connection', socket => {
 
     // Listen typing events
     socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(roomName).emit("START_TYPING_MESSAGE_EVENT", data);
+        const message = { ...data };
+        console.log(message, "typing");
+        chat.in(message.chatRoomName).emit("START_TYPING_MESSAGE_EVENT", data);
     });
     socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
-        chat.in(roomName).emit("STOP_TYPING_MESSAGE_EVENT", data);
+        const message = { ...data };
+        chat.in(message.chatRoomName).emit("STOP_TYPING_MESSAGE_EVENT", data);
     });
   
 // ----------------------------------------------------------------------------------------------------------------------//
