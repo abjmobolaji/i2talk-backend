@@ -310,11 +310,11 @@ io.on('connection', socket => {
     socket.on("START_TYPING_MESSAGE_EVENT", (data) => {
         const message = { ...data };
         console.log(message, "typing");
-        chat.in(message.chatRoomName).emit("START_TYPING_MESSAGE_EVENT", data);
+        io.in(message.chatRoomName).emit("START_TYPING_MESSAGE_EVENT", data);
     });
     socket.on("STOP_TYPING_MESSAGE_EVENT", (data) => {
         const message = { ...data };
-        chat.in(message.chatRoomName).emit("STOP_TYPING_MESSAGE_EVENT", data);
+        io.in(message.chatRoomName).emit("STOP_TYPING_MESSAGE_EVENT", data);
     });
   
 // ----------------------------------------------------------------------------------------------------------------------//
