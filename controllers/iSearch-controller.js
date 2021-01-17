@@ -7,7 +7,7 @@ const iSearchUserName = (req, res, next) => {
     const sql = `SELECT * FROM users WHERE isEnabled = '1' AND (username = '${username_phone}' OR phone = '${username_phone}')`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : 'Something went wrong', err: err.sqlMessage}) 
-        else if (response.length === 0) return res.status(404).json({message : 'No User Found'})
+        // else if (response.length === 0) return res.status(404).json({message : 'No User Found'})
         res.status(200).json({data : response})
     });
 };
@@ -30,7 +30,7 @@ const iSearchLocationName = async (req, res, next) => {
       as distance FROM users WHERE NOT username = '${username}' AND isEnabled = '1' HAVING distance <= '${kilometer}' ORDER BY distance ASC`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : 'Something went wrong'}) 
-        else if (response.length === 0) return res.status(404).json({message : 'No Nearby User Found'})
+        // else if (response.length === 0) return res.status(404).json({message : 'No Nearby User Found'})
         res.status(200).json({data : response})
     });
 };
