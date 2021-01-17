@@ -289,16 +289,16 @@ io.on('connection', socket => {
     console.log(`${socket.id} connected`);
 
     // Join a conversation
-    const { username, userID, roomName, roomId } = socket.handshake.query;
+    const { username, userId, roomId, roomName } = socket.handshake.query;
     socket.join(roomName);
   
-    const user = joinRoom.userJoinChatRoom(socket.id, userID, roomId, username, roomName);
+    const user = joinRoom.userJoinChatRoom(socket.id, userId, roomId, username, roomName);
     io.in(roomName).emit("USER_JOIN_CHAT_EVENT", user);
   
     // Listen for new messages
     socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
         const message = { roomName, ...data };
-        console.log(message)
+        console.log(message);
         chatMessage.addMessageToDb(message.user.userId, message.user.username, message.chatRoomId, message.message, (id) => {
             chatMessage.sendChatMessage(id, (response) => {
                 io.in(roomName).emit("NEW_CHAT_MESSAGE_EVENT", response)
