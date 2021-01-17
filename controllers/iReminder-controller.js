@@ -26,7 +26,7 @@ const editReminder = (req, res, next) => {
 
 // get all reminders
 const getAllReminders = (req, res, next) => {
-    const sql = 'select * from ireminder'
+    const sql = `select * from ireminder where userID = ${userID} ORDER BY timeCompleted DESC`
     connection.query(sql, (err, response) => {
         if (err) return res.status(422).json({message : err.sqlMessage}) 
         else if (response.length === 0) return res.status(404).json({message : 'This user have not set any reminder'})

@@ -22,7 +22,7 @@ const iSearchLocationName = async (req, res, next) => {
        return next(error)
      }
      if (!kilometer) {
-       var kilometer = 200;
+       var kilometer = 160;
      }
     const sql = `SELECT id, username, fullName, state, latitude, longitude, (((acos(sin(('${coordinates.lat}'*pi()/180)) * sin((latitude*pi()/180)) +
      cos(('${coordinates.lat}'*pi()/180)) * cos((latitude*pi()/180)) * cos((('${coordinates.lng}' - longitude)

@@ -21,7 +21,8 @@ const sendMail = require('../util/mail');
 const signup =  (req, res, next) => {
     // const errors = validationResult(req);
     // if (!errors.isEmpty()) { return res.status(404).json({message : 'Invalid Inputs, Check your data!'}); }
-    const { fullName, username, password, email, countryCode, phone, sex, state, latitude, longitude } = req.body;
+    var { fullName, username, password, email, countryCode, phone, sex, state, latitude, longitude } = req.body;
+    var username = username.toLowerCase();
     let sql = `SELECT * FROM users WHERE username = '${username}' OR email = '${email}' OR phone = '${phone}'`;
     connection.query(sql, (err, resp) => {
         if (err) { return res.status(422).json({message : err.sqlMessage}); }
