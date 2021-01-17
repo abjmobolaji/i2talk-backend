@@ -299,7 +299,7 @@ io.on('connection', socket => {
     socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
         const message = { roomName, ...data };
         console.log(message)
-        chatMessage.addMessageToDb(message.user.userId, message.user.username, message.chatRoomId, message.message, (id) => {
+        chatMessage.addMessageToDb(message.user.userID, message.user.username, message.chatRoomId, message.message, (id) => {
             chatMessage.sendChatMessage(id, (response) => {
                 io.in(roomName).emit("NEW_CHAT_MESSAGE_EVENT", response)
             });
