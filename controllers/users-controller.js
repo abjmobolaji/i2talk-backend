@@ -91,7 +91,10 @@ const editUserDetails = (req, res, next) => {
             connection.query(sql2, (err2, resp2) => {
                 if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
                 if (resp2.affectedRows === 0) { return res.status(404).json({message : 'No User with the provided id'}) }
-                res.status(200).json({message : "User updated successfully"})
+                const sql = `select * from users where ID = '${userID}'`
+            connection.query(sql, (err, responses) => {
+                if (err) return res.status(422).json({message : err.sqlMessage}) 
+                res.status(200).json({message : "User updated successfully", data : responses}) });
             });
         } else {
             return res.status(404).json({ message : "Error! User details not found and cant be edited!"})
