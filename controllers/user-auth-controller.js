@@ -427,6 +427,7 @@ const login = (req, res, next) => {
                         "email" : identifiedUser[0].email,
                         "sex" : identifiedUser[0].sex,
                         "fullName" : identifiedUser[0].fullName,
+                        "picture" : identifiedUser[0].picture
                     };
                     const  accesstoken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET,  { expiresIn: process.env.ACCESS_TOKEN_LIFE} );
                     //const  accesstoken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET );
