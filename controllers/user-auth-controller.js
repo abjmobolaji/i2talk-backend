@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const sendMail = require('../util/mail');
+const auditManager = require('./trail-controller');
+
 
 ///////////////////////////////////////////////////////////
     // TWILIO KEYS
@@ -27,6 +29,12 @@ const signup =  (req, res, next) => {
     connection.query(sql, (err, resp) => {
         if (err) { return res.status(422).json({message : err.sqlMessage}); }
         if (resp.length > 0) {
+            trail = {
+                actor : `Anonymous User`,
+                action : `User (Username: ${username}, Email: ${email}, Phone: ${phone}) encountered a duplicate error during registeration!`,
+                type : "Error"
+            }
+            auditManager.logTrail(trail);          
             if (username === resp[0].username) {
                 return res.status(422).json({message : "Duplicate Username!"});
             } else if (email === resp[0].email) {
@@ -52,6 +60,12 @@ const signup =  (req, res, next) => {
                         const newUserID = Buffer.from(`${resp2.insertId}`, 'binary').toString('base64');
                         const secretCode = Buffer.from(`${otpToken}`, 'binary').toString('base64');
                         const accessToken = jwt.sign({uid : newUserID, token: secretCode}, process.env.SIGNUP_TOKEN_SECRET, {expiresIn: '2h'})
+                        trail = {
+                            actor : `${username}`,
+                            action : `User (${username}) successfully registered!`,
+                            type : "success"
+                        }
+                        auditManager.logTrail(trail);
                         res.status(201).json({message : 'Signup Sucessful! Please, select your activation option and activate your account!', accessToken : accessToken});
                     }
                 });
@@ -86,6 +100,12 @@ const activationType = (req, res, next) => {
                     resp[0].email,
                     (err3, info) => {
                         if (err3) { return res.status(500).json({ message: 'Internal Error' }); }
+                        trail = {
+                            actor : `${resp[0].username}`,
+                            action : `User (${resp[0].username}) initiated Email verification!`,
+                            type : "success"
+                        }
+                        auditManager.logTrail(trail);
                         res.status(201).json({message : 'Activation mail sent, check your mail and activate your account!'})
                 });
                 // ${process.env.BASE_URL}
@@ -111,10 +131,22 @@ const activationType = (req, res, next) => {
                         
                         // Request to send verification sms ..Authy id is passed in
                         if (type == "sms") {
+                            trail = {
+                                actor : `${resp[0].username}`,
+                                action : `User (${resp[0].username}) initiated SMS verification!`,
+                                type : "success"
+                            }
+                            auditManager.logTrail(trail);
                             authy.request_sms(authyId, true, (err4, response) => {
                                 if (response.success == "false") return res.status(422).send('Sms not sent')
                             });
                         }  else if (type == "call") {
+                            trail = {
+                                actor : `${resp[0].username}`,
+                                action : `User (${resp[0].username}) initiated Call verification!`,
+                                type : "success"
+                            }
+                            auditManager.logTrail(trail);
                             authy.request_call(authyId, true, (err4, response) => {
                                 if (response.success == "false") return res.status(422).send('Call cannot be made!')
                             });
@@ -133,6 +165,12 @@ const activationType = (req, res, next) => {
             })
         });
     } else {
+        trail = {
+            actor : `Anonymous User`,
+            action : `Anonymous User tried validating account with invalid credentials!`,
+            type : "danger"
+        }
+        auditManager.logTrail(trail);
         return res.status(401).json({message : 'Error! Supply neccessary details!'}); 
     }
 }
@@ -149,7 +187,15 @@ const activateAccountEmail = (req, res, next) => {
     
     // VERIFY TOKEN
     jwt.verify(accessToken, process.env.SIGNUP_TOKEN_SECRET, (err, data) => {
-        if (err) { return res.status(401).json({ message: 'Error!!! Check Link Againj' }); }
+        if (err) { 
+            trail = {
+                actor : `Anonymous User`,
+                action : `Anonymous User tried validating account with invalid token via email!`,
+                type : "danger"
+            }
+            auditManager.logTrail(trail);
+            return res.status(401).json({ message: 'Error!!! Check Link Againj' }); 
+        }
         // DECODE BASE64 TO GET THE RAW DATA
         userID = Buffer.from(data.uid, 'base64').toString();
         otpToken = Buffer.from(data.token, 'base64').toString();
@@ -157,17 +203,41 @@ const activateAccountEmail = (req, res, next) => {
             if (err) { return res.status(422).json({message : err.sqlMessage}); }
             if (resp.length > 0) {
                 if (resp[0].isEnabled == 1) {
+                    trail = {
+                        actor : `${resp[0].username}`,
+                        action : `Activated User Account (${resp[0].username}) tried activating again!`,
+                        type : "error"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(200).json({message : 'Account already activated! Proceed to login'})
                 }
                 if (resp[0].token == otpToken) {
                     connection.query(`UPDATE users SET isEnabled = 1 WHERE ID = ${userID}`, (err2, resp2) => {
                         if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
+                        trail = {
+                            actor : `${resp2[0].username}`,
+                            action : `User Account (${resp2[0].username}) activated via email!`,
+                            type : "success"
+                        }
+                        auditManager.logTrail(trail);
                         return res.status(201).json({message : 'Account activated! You may proceed to login'})
                     });
                 } else {
+                    trail = {
+                        actor : "Anonymous User",
+                        action : `Anonymous User attempted to validating account, Invalid Link!`,
+                        type : "danger"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(401).json({message : 'Error validating account! Check Activation Link Again'})
                 }
             } else {
+                trail = {
+                    actor : "Anonymous User",
+                    action : `Anonymous User attempted to activate account, No account Found!`,
+                    type : "danger"
+                }
+                auditManager.logTrail(trail);
                 return res.status(404).json({message : 'No account found! Check Activation Link Again'})
             }
         });
@@ -202,6 +272,12 @@ const activateAccountPhone = (req, res, next) => {
                 });
                 
             }) */
+            trail = {
+                actor : `${response[0].username}`,
+                action : `User Account (${response[0].username}) activated via phone!`,
+                type : "success"
+            }
+            auditManager.logTrail(trail);
             return res.status(200).send('Verification Successful! You may proceed to Login.');
         })
     });
@@ -227,10 +303,22 @@ const resetPassword = (req, res, next) => {
                     const newUserID = Buffer.from(`${identifiedUser[0].id}`, 'binary').toString('base64');
                     const secretCode = Buffer.from(`${otpToken}`, 'binary').toString('base64');    
                     const accessToken = jwt.sign({uid : newUserID, token: secretCode}, process.env.RESET_TOKEN_SECRET, {expiresIn: '1h'});
+                    trail = {
+                        actor : `${identifiedUser[0].username}`,
+                        action : `User ${identifiedUser[0].username} initiated a password reset!`,
+                        type : "success"
+                    }
+                    auditManager.logTrail(trail);
                     res.status(201).json({message : 'Select your reset password method!', accessToken : accessToken});
                 }
             });
         } else {
+            trail = {
+                actor : "Anonymous User",
+                action : `Anonymous User attempted to reset password, No account Found!`,
+                type : "danger"
+            }
+            auditManager.logTrail(trail);
             // return status 200 to deceive bots instead of 404
             return res.status(200).json({ message: 'No Account found for user!' }); 
         }
@@ -264,6 +352,12 @@ const resetOptions = (req, res, next) => {
                     identifiedUser[0].email,
                     (err3, info) => {
                         if (err3) { return res.status(500).json({ message: 'Internal Error' }); }
+                        trail = {
+                            actor : `${identifiedUser[0].username}`,
+                            action : `User ${identifiedUser[0].username} initiated a password reset via email!`,
+                            type : "success"
+                        }
+                        auditManager.logTrail(trail);
                         res.status(201).json({message : 'Password reset link sent. Check your mail and reset your password!'})
                 });
             });            
@@ -280,7 +374,12 @@ const resetOptions = (req, res, next) => {
                     (errAuthy, respAuthy) => {
                     if (errAuthy || !respAuthy.user) { return res.status(422).json({message : errAuthy}); }
                     const authyId = respAuthy.user.id;  //Authy id generated
-
+                    trail = {
+                        actor : `${resp[0].username}`,
+                        action : `User ${resp[0].username} initiated a password reset via phone!`,
+                        type : "success"
+                    }
+                    auditManager.logTrail(trail);
                     // Authy id stored in db for the newly created user
                     connection.query(`UPDATE users SET authyId = '${authyId}' where email = '${resp[0].email}'`, (err3, resp3) => {
                         if (err3) { return res.status(422).json({message : err3.sqlMessage }); }   
@@ -288,11 +387,27 @@ const resetOptions = (req, res, next) => {
                         // Request to send verification sms ..Authy id is passed in
                         if (type == "sms") {
                             authy.request_sms(authyId, true, (err4, response) => {
-                                if (response.success == "false") return res.status(422).send('Sms not sent')
+                                if (response.success == "false") { 
+                                    trail = {
+                                        actor : `${resp[0].username}`,
+                                        action : `SMS could not be sent to User ${resp[0].username}!`,
+                                        type : "error"
+                                    }
+                                    auditManager.logTrail(trail);
+                                    return res.status(422).send('Sms not sent') 
+                                }
                             });
                         }  else if (type == "call") {
                             authy.request_call(authyId, true, (err4, response) => {
-                                if (response.success == "false") return res.status(422).send('Call cannot be made!')
+                                if (response.success == "false") { 
+                                    trail = {
+                                        actor : `${resp[0].username}`,
+                                        action : `Call could not be sent to User ${resp[0].username}!`,
+                                        type : "error"
+                                    }
+                                    auditManager.logTrail(trail);
+                                    return res.status(422).send('Call cannot be made!') 
+                                }
                             });
                         }
                         //console.log(authyId)
@@ -308,6 +423,12 @@ const resetOptions = (req, res, next) => {
             })
         });
     } else {
+        trail = {
+            actor : "Anonymous User",
+            action : `Anonymous User was not able to initiate reset password, Invalid Details!`,
+            type : "error"
+        }
+        auditManager.logTrail(trail);
         return res.status(401).json({message : 'Error! Supply neccessary details!'}); 
     }
 }
@@ -333,9 +454,21 @@ const getResetPassword = (req, res, next) => {
                 if (resp[0].token == otpToken) {
                     return res.status(200).json({ token : resetToken, status : "Verified" })
                 } else {
+                    trail = {
+                        actor : "User",
+                        action : `User was not able to reset password, Invalid Link!`,
+                        type : "error"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(401).json({message : 'Error resetting passowrd! Check Reset Link Again'})
                 }
             } else {
+                trail = {
+                    actor : "Anonymous User",
+                    action : `Anonymous User attempted to reset password, No account Found!`,
+                    type : "danger"
+                }
+                auditManager.logTrail(trail);
                 // status 200 used to deceive bots instead of 404
                 return res.status(200).json({message : 'No account found! Check Reset Link Again'})
             }
@@ -361,9 +494,21 @@ const setPassword = (req, res, next) => {
             if (err) { return res.status(422).json({message : err.sqlMessage}); }
             if (resp.length > 0) {
                 if (resp[0].token != otpToken) {
+                    trail = {
+                        actor : "User",
+                        action : `User was not able to reset password, Invalid Link!`,
+                        type : "error"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(401).json({message : 'Error resetting passowrd! Check Reset Link Again'})
                 }
             } else {
+                trail = {
+                    actor : "Anonymous User",
+                    action : `Anonymous User attempted to reset password, No account Found!`,
+                    type : "danger"
+                }
+                auditManager.logTrail(trail);
                 // status 200 used to deceive bots instead of 404
                 return res.status(200).json({message : 'No account found! Check Reset Link Again'})
             }
@@ -373,8 +518,20 @@ const setPassword = (req, res, next) => {
             connection.query(`UPDATE users SET password = '${hash}' WHERE ID = ${userID}`, (err2, resp) => {
                 if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
                 if (resp.affectedRows === 0) {
+                    trail = {
+                        actor : "User",
+                        action : `User was not able to reset password!`,
+                        type : "error"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(404).json({message : "Error Setting New Password!"})
                 } else {
+                    trail = {
+                        actor : "User",
+                        action : `User with ID ${userID} was able to reset password!`,
+                        type : "success"
+                    }
+                    auditManager.logTrail(trail);
                     res.status(200).json({message : "New password has been set. You can now login!"});
                 }
             });
@@ -395,8 +552,20 @@ const resetPhone = (req, res, next) => {
             connection.query(`UPDATE users SET password = '${hash}' WHERE authyId = '${req.user.verify}'`, (err2, resp) => {
                 if (err2) { return res.status(422).json({message : err2.sqlMessage}); }
                 if (resp.affectedRows === 0) {
+                    trail = {
+                        actor : "User",
+                        action : `User was not able to reset password!`,
+                        type : "error"
+                    }
+                    auditManager.logTrail(trail);
                     return res.status(404).json({message : "Error Setting New Password!"})
                 } else {
+                    trail = {
+                        actor : "User",
+                        action : `User with Authy ID (${req.user.verify}) was able to reset password! with phone!`,
+                        type : "success"
+                    }
+                    auditManager.logTrail(trail);
                     res.status(200).json({message : "New password has been set. You can now login!"});
                 }
             });
@@ -415,6 +584,12 @@ const login = (req, res, next) => {
             if(err) { return res.status(422).json({message : err.sqlMessage}); }
             
             if (!identifiedUser[0]) { // If no user found
+                trail = {
+                    actor : "Anonymous",
+                    action : `Anonymous User with ${login} attempted to login with invalid credentials!`,
+                    type : "danger"
+                }
+                auditManager.logTrail(trail);
                 return res.status(401).json({message : "Could not identify user, credentials seem to be wrong."});
             }
             var resComp = await bcrypt.compare(password, identifiedUser[0].password) // Compare Password using Async/Await
@@ -435,11 +610,52 @@ const login = (req, res, next) => {
                         "data" : userData,
                         "accessToken" : accesstoken
                     }
-                    res.status(200).json(respData);
+                    // res.status(200).json(respData);
+                    connection.query(`SELECT * FROM user_roles WHERE userID = ${identifiedUser[0].id}`, (errUser, dataUser) => {
+                        if (errUser) { return res.status(422).json({message : err.sqlMessage}); }
+                        if (dataUser.length > 0) {
+                            var userType = "admin";
+                        } else {
+                            var userType = "user";
+                        }
+                        var  userData = {
+                            "userID" : identifiedUser[0].id,
+                            "username" : identifiedUser[0].username,
+                            "email" : identifiedUser[0].email,
+                            "sex" : identifiedUser[0].sex,
+                            "fullName" : identifiedUser[0].fullName,
+                            "userType" : userType
+                        };
+                        const  accesstoken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET,  { expiresIn: process.env.ACCESS_TOKEN_LIFE} );
+                        //const  accesstoken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET );
+                        respData = {
+                            "data" : userData,
+                            "accessToken" : accesstoken
+                        }
+                        trail = {
+                            actor : `${identifiedUser[0].username}`,
+                            action : `User ${identifiedUser[0].username} logged in successfully.`,
+                            type : "success"
+                        }
+                        auditManager.logTrail(trail);
+                        res.status(200).json(respData);
+                    });
                 } else {
+                    trail = {
+                        actor : `${identifiedUser[0].username}`,
+                        action : `Inactivated User Account ${identifiedUser[0].username} attempted logging in.`,
+                        type : "critical"
+                    }
+                    auditManager.logTrail(trail);
                     res.status(401).json({message : `Account has not been activated! Please, check your mail or request for another activation here`});
                 }
             } else {
+                trail = {
+                    actor : "Anonymous",
+                    action : `Anonymous User with ${login} attempted to login with incorrect Password!`,
+                    type : "danger"
+                }
+                auditManager.logTrail(trail);
                 res.status(401).json({message : "Password is not correct! Try Again!!!!"}); //Error Message
             }
      });
@@ -459,12 +675,30 @@ const requestActivationLink = (req, res, next) => {
                 const secretCode = Buffer.from(`${otpToken}`, 'binary').toString('base64');
                 const accessToken = jwt.sign({uid : newUserID, token: secretCode}, process.env.SIGNUP_TOKEN_SECRET, {expiresIn: '1h'});
                 connection.query(`UPDATE users SET users.token = '${otpToken}' WHERE ID = ${identifiedUser[0].id}`, (err2, resp) => {
-                   return res.status(201).json({message : 'Select your activation option and activate your account!', accessToken : accessToken});
+                    trail = {
+                        actor : `${identifiedUser[0].username}`,
+                        action : `User (${identifiedUser[0].username}) requested for new activation options!`,
+                        type : "success"
+                    }
+                    auditManager.logTrail(trail);
+                    return res.status(201).json({message : 'Select your activation option and activate your account!', accessToken : accessToken});
                 });
             } else {
+                trail = {
+                    actor : `${identifiedUser[0].username}`,
+                    action : `Activated User (${identifiedUser[0].username}) tried requesting for new activation!`,
+                    type : "error"
+                }
+                auditManager.logTrail(trail);
                 return res.status(200).json({message : 'Account already activated, You may proceed to login!'});
             }
         } else {
+            trail = {
+                actor : `Anonymous User`,
+                action : `Anonymous User requested for new activation options!`,
+                type : "danger"
+            }
+            auditManager.logTrail(trail);
             return res.status(404).json({ message: 'No Account found for user!' }); 
         }
     });
